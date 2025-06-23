@@ -1,171 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>AkServer Announcement + Game</title>
+  <meta charset="UTF-8">
+  <title>AkServer Game Notice</title>
   <style>
     body {
       margin: 0;
-      font-family: sans-serif;
-      font-size: 16px;
-      background: #f9f9f9;
-    }
-
-    #wrapper {
-      max-height: 25vh;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-    }
-
-    #expandBtn {
-      width: 100%;
-      padding: 8px;
-      font-size: 14px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    #expandBtn:hover {
-      background-color: #0056b3;
-    }
-
-    .announcement-text {
-      padding: 12px 16px;
+      font-family: Arial, sans-serif;
       background: #fff;
-      border-bottom: 1px solid #ccc;
     }
-
-    .game-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px;
+    #container {
+      padding: 10px;
+      text-align: center;
     }
-
+    #gameWrapper {
+      display: none;
+      margin-top: 10px;
+    }
     #board {
       display: grid;
       grid-template: repeat(3, 1fr) / repeat(3, 1fr);
       gap: 4px;
-      width: 240px;
-      height: 240px;
+      width: 300px;
+      height: 300px;
+      margin: auto;
     }
-
     .cell {
+      background: #eee;
+      border: 2px solid #ccc;
+      font-size: 2.5rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 2rem;
-      background: #fff;
-      border: 2px solid #ccc;
       cursor: pointer;
-      user-select: none;
     }
-
     .cell.disabled {
       cursor: default;
-      color: #555;
+      color: #777;
     }
-
-    #status {
-      margin-top: 10px;
-      font-size: 1rem;
-    }
-
-    button.restart {
+    button {
       margin-top: 10px;
       padding: 6px 12px;
-      font-size: 14px;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
-  <div id="wrapper">
-    <div class="announcement-text">
-      <p><strong>🎉 New Update:</strong> Tic-Tac-Toe game added to AkServer interface!</p>
-      <p>Play directly inside the dashboard. Click "Show More" to expand the full game.</p>
-      <p>We are working on more exciting mini-tools soon. Stay tuned!</p>
+  <div id="container">
+    <div id="shortMessage">
+      <strong>🎮 A quick game to refresh your mind!</strong><br>
+      <button onclick="expandGame()">Tap to Play</button>
     </div>
 
-    <div class="game-container">
+    <div id="gameWrapper">
       <div id="board"></div>
-      <div id="status">Player X’s turn</div>
-      <button class="restart" onclick="resetGame()">Restart</button>
+      <div id="status">Player X's turn</div>
+      <button onclick="resetGame()">Restart</button>
     </div>
   </div>
 
-  <button id="expandBtn">Show More</button>
-
   <script>
-    const wrapper = document.getElementById('wrapper');
-    const btn = document.getElementById('expandBtn');
-    let expanded = false;
-
-    btn.addEventListener('click', () => {
-      expanded = !expanded;
-      wrapper.style.maxHeight = expanded ? '90vh' : '25vh';
-      btn.textContent = expanded ? 'Show Less' : 'Show More';
-      setTimeout(postHeight, 400);
-    });
-
-    function postHeight() {
-      const height = document.body.scrollHeight;
-      parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
-    }
-
-    // Game Logic
-    const boardEl = document.getElementById('board');
-    const statusEl = document.getElementById('status');
     let board = Array(9).fill(null);
     let current = 'X';
     let ended = false;
 
+    function postHeight() {
+      setTimeout(() => {
+        const height = document.body.scrollHeight;
+        parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
+      }, 50);
+    }
+
+    function expandGame() {
+      document.getElementById('shortMessage').style.display = 'none';
+      document.getElementById('gameWrapper').style.display = 'block';
+      drawBoard();
+      postHeight();
+    }
+
     function drawBoard() {
+      const boardEl = document.getElementById('board');
       boardEl.innerHTML = '';
-      board.forEach((mark, idx) => {
-        const c = document.createElement('div');
-        c.className = 'cell' + (mark ? ' disabled' : '');
-        c.textContent = mark || '';
-        c.onclick = () => makeMove(idx);
-        boardEl.append(c);
+      board.forEach((val, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'cell' + (val ? ' disabled' : '');
+        cell.textContent = val || '';
+        cell.onclick = () => makeMove(i);
+        boardEl.appendChild(cell);
       });
     }
 
-    function makeMove(idx) {
-      if (ended || board[idx]) return;
-      board[idx] = current;
+    function makeMove(i) {
+      if (ended || board[i]) return;
+      board[i] = current;
       if (checkWin(current)) {
-        statusEl.textContent = `Player ${current} wins!`;
+        document.getElementById('status').textContent = `Player ${current} wins!`;
         ended = true;
       } else if (!board.includes(null)) {
-        statusEl.textContent = "It's a tie!";
+        document.getElementById('status').textContent = `It's a tie!`;
         ended = true;
       } else {
         current = current === 'X' ? 'O' : 'X';
-        statusEl.textContent = `Player ${current}’s turn`;
+        document.getElementById('status').textContent = `Player ${current}'s turn`;
       }
       drawBoard();
     }
 
     function checkWin(p) {
-      const wins = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8],
-        [0, 3, 6], [1, 4, 7], [2, 5, 8],
-        [0, 4, 8], [2, 4, 6]
+      const winPatterns = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
       ];
-      return wins.some(line => line.every(i => board[i] === p));
+      return winPatterns.some(pattern => pattern.every(i => board[i] === p));
     }
 
     function resetGame() {
       board = Array(9).fill(null);
       current = 'X';
       ended = false;
-      statusEl.textContent = `Player ${current}’s turn`;
+      document.getElementById('status').textContent = `Player ${current}'s turn`;
       drawBoard();
     }
 
-    drawBoard();
+    // Auto-resize iframe height on initial load
     window.onload = postHeight;
   </script>
 </body>
