@@ -2,68 +2,70 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AkServer Announcement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       margin: 0;
       font-family: sans-serif;
       background: #fff;
-      overflow: hidden;
     }
 
-    #container {
-      padding: 12px;
-      box-sizing: border-box;
-      height: 100%;
-      overflow: hidden;
-      position: relative;
-    }
-
-    #content {
-      max-height: 100px;
-      overflow: hidden;
+    #wrapper {
+      padding: 10px 15px;
       transition: max-height 0.4s ease;
-    }
-
-    #content.expanded {
-      max-height: 500px; /* will expand inside iframe only */
-      overflow-y: auto;
+      overflow: hidden;
+      max-height: 140px; /* Default collapsed height */
     }
 
     #toggle-btn {
-      position: absolute;
-      top: 4px;
-      right: 10px;
-      font-size: 13px;
-      background: #007bff;
+      display: block;
+      width: 100%;
+      padding: 8px;
+      text-align: center;
+      background: #0078d4;
       color: white;
       border: none;
-      padding: 4px 8px;
       cursor: pointer;
-      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    #content {
+      font-size: 14px;
+      line-height: 1.5em;
     }
   </style>
 </head>
 <body>
-  <div id="container">
-    <button id="toggle-btn">Show More</button>
+  <div id="wrapper">
     <div id="content">
-      <p><strong>📢 Announcement:</strong> This is a short announcement message by default.</p>
-      <p>When expanded, this will reveal more text inside the same frame.</p>
-      <p>Additional line 1 with extra details.</p>
-      <p>Additional line 2 with longer description for updates, etc.</p>
-      <p>More details and changes in AkServer features!</p>
+      <p>📢 Welcome to AkServer! This is your professional file sync and sharing platform.</p>
+      <p>🎮 New Feature: Now play games like Tic Tac Toe inside the app – powered by GitHub Pages!</p>
+      <p>🚀 Tip: AkServer works fully offline with one-click HTTPS install. Stay secure, always.</p>
+      <p>🛠️ Check for updates, features, or events right here in the announcement window.</p>
     </div>
   </div>
 
-  <script>
-    const btn = document.getElementById('toggle-btn');
-    const content = document.getElementById('content');
+  <button id="toggle-btn">Show More</button>
 
-    btn.onclick = () => {
-      content.classList.toggle('expanded');
-      btn.textContent = content.classList.contains('expanded') ? "Show Less" : "Show More";
+  <script>
+    const wrapper = document.getElementById("wrapper");
+    const toggleBtn = document.getElementById("toggle-btn");
+    let expanded = false;
+
+    function sendHeight() {
+      const height = document.body.scrollHeight;
+      parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
+    }
+
+    toggleBtn.onclick = () => {
+      expanded = !expanded;
+      wrapper.style.maxHeight = expanded ? '1000px' : '140px';
+      toggleBtn.textContent = expanded ? 'Show Less' : 'Show More';
+      setTimeout(sendHeight, 400); // After transition
     };
+
+    window.onload = sendHeight;
   </script>
 </body>
 </html>
