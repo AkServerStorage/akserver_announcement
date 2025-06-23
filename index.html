@@ -8,13 +8,25 @@
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
-      background: #ffffff;
+      background: #fff;
       color: #222;
     }
     .container {
-      padding: 12px 20px;
+      padding: 12px 20px 16px;
       max-width: 900px;
       margin: auto;
+    }
+    .toggle-button {
+      background: #0066cc;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      float: right;
+      margin-top: -8px;
+      margin-bottom: 12px;
     }
     .headline {
       font-size: 1.25rem;
@@ -25,43 +37,66 @@
     .message {
       font-size: 1rem;
       line-height: 1.5;
-      color: #555;
+      color: #444;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .collapsed {
+      max-height: 100px;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    }
+    .expanded {
+      max-height: 1000px;
     }
     .divider {
       height: 1px;
       background: #ddd;
-      margin: 12px 0;
+      margin: 16px 0 10px;
+    }
+    .footer {
+      font-size: 0.85rem;
+      color: #888;
     }
   </style>
-  <script>
-    function sendHeight() {
-      window.parent.postMessage(
-        {
-          type: "akserver-iframe-height",
-          height: document.body.scrollHeight
-        },
-        "*"
-      );
-    }
-    window.onload = sendHeight;
-    window.onresize = sendHeight;
-  </script>
 </head>
 <body>
   <div class="container">
+    <button class="toggle-button" onclick="toggleContent()">Show More</button>
     <div class="headline">🔔 Latest AkServer Updates</div>
-    <div class="message">
-      We're excited to announce a new lightweight offline mode for seamless file transfers!<br><br>
-      ⚡ Speed improvements for local sync.<br>
-      🛡️ Added enhanced security for device logins.<br>
-      📦 Desktop installer now bundles GUI + background service.<br>
-      <br>
-      Stay tuned for the Android companion app – launching soon!
+    <div id="announcement" class="message collapsed">
+      ✅ Version 2.0 released with blazing-fast sync engine.<br><br>
+      🖥 Desktop installer now supports silent mode & admin setup.<br>
+      🔒 Security improvements: OTP login retry limit and better session expiry.<br>
+      🌐 Embedded blog/news section auto-refreshes via GitHub iframe.<br>
+      📱 Android version in beta! Launch expected this month.<br><br>
+      🎮 Bonus: Mini Tic-Tac-Toe game added for fun. Check it in the bottom panel!
     </div>
     <div class="divider"></div>
-    <div class="message" style="font-size: 0.9rem; color: #888;">
-      Last updated: June 23, 2025
-    </div>
+    <div class="footer">Last updated: June 23, 2025</div>
   </div>
+
+  <script>
+    const content = document.getElementById('announcement');
+    const button = document.querySelector('.toggle-button');
+
+    function toggleContent() {
+      const isCollapsed = content.classList.contains('collapsed');
+      content.classList.toggle('collapsed', !isCollapsed);
+      content.classList.toggle('expanded', isCollapsed);
+      button.textContent = isCollapsed ? "Show Less" : "Show More";
+      setTimeout(postHeight, 100); // delay ensures height change is rendered
+    }
+
+    function postHeight() {
+      window.parent.postMessage({
+        type: "akserver-iframe-height",
+        height: document.body.scrollHeight
+      }, "*");
+    }
+
+    window.onload = postHeight;
+    window.onresize = postHeight;
+  </script>
 </body>
 </html>
