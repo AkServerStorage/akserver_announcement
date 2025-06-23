@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Announcement</title>
   <style>
     body {
       margin: 0;
+      padding: 0;
+      font-family: sans-serif;
       background: transparent;
-      font-family: Arial, sans-serif;
     }
-    .announcement {
-      padding: 15px 20px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-      max-width: 90%;
-      margin: 20px auto;
-      text-align: center;
-    }
-    h2 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-    p {
+
+    .card {
+      padding: 16px 20px;
       font-size: 16px;
-      color: #333;
-      margin: 0;
+      line-height: 1.5;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      color: #222;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 6px;
     }
   </style>
 </head>
 <body>
-  <div class="announcement">
-    <h2>📢 Latest Announcement</h2>
-    <p>AkServer 1.2 now supports smart sync folders and tray icon control on Windows.</p>
+  <div class="card">
+    <div class="title">📢 Latest Announcement</div>
+    AkServer 1.2 now supports smart sync folders and tray icon control on Windows.
   </div>
 </body>
 </html>
