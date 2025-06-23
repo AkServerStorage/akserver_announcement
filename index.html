@@ -1,47 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>AkServer Announcement</title>
   <style>
     body {
       margin: 0;
-      padding: 12px;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      background-color: #f9f9f9;
-      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 12px 16px;
+      font-size: 15px;
+      background: white;
+      color: #222;
     }
     .announcement {
-      background-color: #fff;
-      border-radius: 10px;
-      padding: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-      text-align: center;
+      line-height: 1.5;
     }
     .announcement img {
       max-width: 100%;
-      height: auto;
-      margin-bottom: 10px;
       border-radius: 6px;
+      margin-top: 10px;
     }
-    .announcement a {
+    a {
       color: #007bff;
       text-decoration: none;
-      font-weight: bold;
     }
-    .announcement a:hover {
+    a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
   <div class="announcement">
-    <img src="banner.jpg" alt="New Update">
-    <p><strong>🎉 AkServer 1.0 Released!</strong></p>
-    <p>Try the brand new sync engine, now faster and safer!</p>
-    <a href="https://akserverstorage.blogspot.com/" target="_blank">Read Full Details</a>
+    <strong>📢 New Feature:</strong> Auto-sync your folders even when minimized!<br>
+    Try it now by updating to the latest version.<br><br>
+
+    <a href="https://forms.gle/mWgUnNddhLbAyg3x8" target="_blank">Give Feedback</a>
+
+    <img src="https://raw.githubusercontent.com/akshaymech/akserver_announcement/main/logo.jpg" alt="Feature preview">
   </div>
+
+  <script>
+    function postHeight() {
+      const height = document.body.scrollHeight;
+      window.parent.postMessage({ type: 'akserver-iframe-height', height: height }, '*');
+    }
+
+    window.onload = postHeight;
+    window.onresize = postHeight;
+  </script>
 </body>
 </html>
