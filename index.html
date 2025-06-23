@@ -6,34 +6,44 @@
   <style>
     body {
       margin: 0;
-      padding: 10px;
-      font-family: sans-serif;
+      padding: 12px;
+      font-family: "Segoe UI", sans-serif;
       background: #fff;
       color: #333;
       font-size: 15px;
+      position: relative;
     }
-    #moreBtn {
-      background: #0088cc;
+    #toggleBtn {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: #0078d4;
       color: white;
       border: none;
-      padding: 6px 12px;
-      margin-top: 10px;
-      cursor: pointer;
+      padding: 4px 10px;
+      font-size: 13px;
       border-radius: 4px;
+      cursor: pointer;
+    }
+    #message {
+      padding-top: 30px;
     }
   </style>
 </head>
 <body>
-  <div id="content">
+  <button id="toggleBtn" onclick="toggleHeight()">Show More</button>
+
+  <div id="message">
     📢 Welcome to AkServer!<br>
     New features are rolling out.<br>
     Please check the dashboard regularly.<br>
     📢 Welcome to AkServer!<br>
     New features are rolling out.<br>
     Please check the dashboard regularly.<br>
-    <span style="display: none;" id="extra">Here’s more information about updates, bug fixes, and future plans for AkServer. Stay tuned and connect with us!</span>
-    <br>
-    <button id="moreBtn" onclick="toggleHeight()">Show More</button>
+    <span id="extra" style="display: none;">
+      Here’s more info about upcoming updates, improvements in performance, new mobile integrations, beta features for folder syncing, and better security. Stay tuned and thank you for supporting AkServer!<br><br>
+      We value your feedback and are continuously improving.
+    </span>
   </div>
 
   <script>
@@ -41,18 +51,15 @@
 
     function toggleHeight() {
       const extra = document.getElementById('extra');
-      const btn = document.getElementById('moreBtn');
-      const targetHeight = expanded ? 80 : 250;
+      const btn = document.getElementById('toggleBtn');
+      const targetHeight = expanded ? 80 : 260;
 
       extra.style.display = expanded ? 'none' : 'inline';
       btn.textContent = expanded ? 'Show More' : 'Show Less';
       expanded = !expanded;
 
-      // Send height update to parent
       parent.postMessage({ type: 'akserver-iframe-height', height: targetHeight }, '*');
     }
-
-    // 🚫 Do not send any message on load — starts at 80px naturally
   </script>
 </body>
 </html>
