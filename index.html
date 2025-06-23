@@ -1,125 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tic‑Tac‑Toe</title>
+  <meta charset="UTF-8">
   <style>
     body {
-      font-family: sans-serif;
-      background: #f0f0f0;
       margin: 0;
-      padding: 20px;
-      text-align: center;
+      font-family: sans-serif;
+      font-size: 16px;
     }
-    #header, #footer {
-      font-weight: bold;
-      margin-bottom: 12px;
+    #wrapper {
+      max-height: 25vh; /* Default collapsed */
+      overflow: hidden;
+      transition: max-height 0.4s ease;
     }
-    #board {
-      display: grid;
-      grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-      gap: 4px;
-      width: 240px;
-      height: 240px;
-      margin: 0 auto;
-    }
-    .cell {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2rem;
-      background: #fff;
-      border: 2px solid #ccc;
-      cursor: pointer;
-      user-select: none;
-    }
-    .cell.disabled {
-      cursor: default;
-      color: #555;
-    }
-    #status {
-      margin-top: 16px;
-      font-size: 1.1rem;
-    }
-    button {
-      margin-top: 10px;
+    #expandBtn {
+      background: #007bff;
+      color: white;
+      border: none;
       padding: 6px 12px;
-      font-size: 1rem;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+    }
+    #expandBtn:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div id="header">🎮 Game Zone – Play & Relax</div>
+  <div id="wrapper">
+    <!-- Your game OR announcement content here -->
+    <div id="content">
+      <p>🎉 Welcome to AkServer news panel!</p>
+      <p>📢 Here you’ll receive all updates related to file sharing, device sync, and upcoming features.</p>
+      <p>🎮 Try the new Tic‑Tac‑Toe game below.</p>
+      <p>🚀 This panel will auto-expand if you choose to view more.</p>
 
-  <div id="board"></div>
-  <div id="status">Player X’s turn</div>
-  <button onclick="resetGame()">Restart</button>
-
-  <div id="footer" style="margin-top: 16px;">Good luck! 🍀</div>
+      <!-- You can paste your Tic-Tac-Toe game code here if needed -->
+    </div>
+  </div>
+  <button id="expandBtn">Show More</button>
 
   <script>
-    const boardEl = document.getElementById('board');
-    const statusEl = document.getElementById('status');
-    let board = Array(9).fill(null);
-    let current = 'X';
-    let ended = false;
+    const wrapper = document.getElementById('wrapper');
+    const btn = document.getElementById('expandBtn');
+    let expanded = false;
 
-    function drawBoard() {
-      boardEl.innerHTML = '';
-      board.forEach((mark, idx) => {
-        const c = document.createElement('div');
-        c.className = 'cell' + (mark ? ' disabled' : '');
-        c.textContent = mark || '';
-        c.onclick = () => makeMove(idx);
-        boardEl.append(c);
-      });
+    function postHeight() {
+      const height = document.body.scrollHeight;
+      parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
     }
 
-    function makeMove(idx) {
-      if (ended || board[idx]) return;
-      board[idx] = current;
-      if (checkWin(current)) {
-        statusEl.textContent = `Player ${current} wins!`;
-        ended = true;
-      } else if (!board.includes(null)) {
-        statusEl.textContent = "It's a tie!";
-        ended = true;
-      } else {
-        current = current === 'X' ? 'O' : 'X';
-        statusEl.textContent = `Player ${current}’s turn`;
-      }
-      drawBoard();
-    }
+    btn.addEventListener('click', () => {
+      expanded = !expanded;
+      wrapper.style.maxHeight = expanded ? '90vh' : '25vh';
+      btn.textContent = expanded ? 'Show Less' : 'Show More';
+      setTimeout(postHeight, 400); // Wait for animation
+    });
 
-    function checkWin(p) {
-      const wins = [
-        [0,1,2],[3,4,5],[6,7,8],
-        [0,3,6],[1,4,7],[2,5,8],
-        [0,4,8],[2,4,6]
-      ];
-      return wins.some(line => line.every(i => board[i] === p));
-    }
-
-    function resetGame() {
-      board.fill(null);
-      current = 'X';
-      ended = false;
-      statusEl.textContent = `Player ${current}’s turn`;
-      drawBoard();
-    }
-
-    // Auto height postMessage for AkServer
-    function reportHeight() {
-      const totalHeight = document.body.scrollHeight;
-      parent.postMessage({ type: 'akserver-iframe-height', height: totalHeight }, '*');
-    }
-
-    window.onload = () => {
-      drawBoard();
-      reportHeight();
-    };
-    window.onresize = reportHeight;
+    // Send initial height
+    window.onload = postHeight;
   </script>
 </body>
 </html>
