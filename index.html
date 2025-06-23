@@ -1,102 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AkServer Announcements</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
+      font-family: sans-serif;
       background: #fff;
-      color: #222;
+      overflow: hidden;
+      transition: padding-top 0.3s ease;
     }
-    .container {
-      padding: 12px 20px 16px;
-      max-width: 900px;
-      margin: auto;
+
+    #container {
+      padding: 12px;
+      box-sizing: border-box;
     }
-    .toggle-button {
-      background: #0066cc;
-      color: white;
+
+    #extra-content {
+      display: none;
+    }
+
+    #toggle-btn {
+      display: block;
+      width: 100%;
       border: none;
-      padding: 6px 12px;
-      font-size: 0.9rem;
-      border-radius: 4px;
+      background: #007bff;
+      color: white;
+      font-size: 14px;
+      padding: 6px;
       cursor: pointer;
-      float: right;
-      margin-top: -8px;
-      margin-bottom: 12px;
-    }
-    .headline {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #333;
-    }
-    .message {
-      font-size: 1rem;
-      line-height: 1.5;
-      color: #444;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-    }
-    .collapsed {
-      max-height: 100px;
-      overflow: hidden;
-      mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-    }
-    .expanded {
-      max-height: 1000px;
-    }
-    .divider {
-      height: 1px;
-      background: #ddd;
-      margin: 16px 0 10px;
-    }
-    .footer {
-      font-size: 0.85rem;
-      color: #888;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <button class="toggle-button" onclick="toggleContent()">Show More</button>
-    <div class="headline">🔔 Latest AkServer Updates</div>
-    <div id="announcement" class="message collapsed">
-      ✅ Version 2.0 released with blazing-fast sync engine.<br><br>
-      🖥 Desktop installer now supports silent mode & admin setup.<br>
-      🔒 Security improvements: OTP login retry limit and better session expiry.<br>
-      🌐 Embedded blog/news section auto-refreshes via GitHub iframe.<br>
-      📱 Android version in beta! Launch expected this month.<br><br>
-      🎮 Bonus: Mini Tic-Tac-Toe game added for fun. Check it in the bottom panel!
+  <div id="container">
+    <p><strong>📢 Important Update:</strong> AkServer now includes GitHub-based announcements.</p>
+    <div id="extra-content">
+      <p>This section contains longer details about the new features. You can now dynamically show/hide this area and control the frame from your desktop interface without needing to update internal code again.</p>
+      <p>Expect more performance updates and UI improvements in coming builds!</p>
     </div>
-    <div class="divider"></div>
-    <div class="footer">Last updated: June 23, 2025</div>
+    <button id="toggle-btn">Show More</button>
   </div>
 
   <script>
-    const content = document.getElementById('announcement');
-    const button = document.querySelector('.toggle-button');
+    const button = document.getElementById('toggle-btn');
+    const extra = document.getElementById('extra-content');
+    const body = document.body;
 
-    function toggleContent() {
-      const isCollapsed = content.classList.contains('collapsed');
-      content.classList.toggle('collapsed', !isCollapsed);
-      content.classList.toggle('expanded', isCollapsed);
-      button.textContent = isCollapsed ? "Show Less" : "Show More";
-      setTimeout(postHeight, 100); // delay ensures height change is rendered
-    }
+    let expanded = false;
 
-    function postHeight() {
-      window.parent.postMessage({
+    function sendHeight(height) {
+      parent.postMessage({
         type: "akserver-iframe-height",
-        height: document.body.scrollHeight
+        height: height
       }, "*");
     }
 
-    window.onload = postHeight;
-    window.onresize = postHeight;
+    function updateHeight() {
+      const height = document.documentElement.scrollHeight;
+      sendHeight(height);
+    }
+
+    button.addEventListener('click', () => {
+      expanded = !expanded;
+      extra.style.display = expanded ? 'block' : 'none';
+      button.textContent = expanded ? "Show Less" : "Show More";
+      setTimeout(updateHeight, 100); // delay to let DOM update
+    });
+
+    window.onload = updateHeight;
   </script>
 </body>
 </html>
