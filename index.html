@@ -1,23 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AkServer Announcement</title>
   <style>
     body {
       margin: 0;
       padding: 12px;
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    .announcement {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       text-align: center;
     }
-    img {
+    .announcement img {
       max-width: 100%;
-      border-radius: 10px;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 6px;
+    }
+    .announcement a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .announcement a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <img src="logo.png" alt="Announcement Image">
-  <p>🚀 AkServer has a new update!</p>
+  <div class="announcement">
+    <img src="banner.jpg" alt="New Update">
+    <p><strong>🎉 AkServer 1.2 Released!</strong></p>
+    <p>Try the brand new sync engine, now faster and safer!</p>
+    <a href="https://akserverstorage.blogspot.com/" target="_blank">Read Full Details</a>
+  </div>
 </body>
 </html>
