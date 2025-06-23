@@ -1,70 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AkServer Announcements</title>
   <style>
     body {
       margin: 0;
-      padding: 16px;
       font-family: Arial, sans-serif;
-      background-color: #f8f8f8;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    .announcement {
+      font-size: 14px;
+      padding: 12px;
       background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-
-    h2 {
-      color: #0a74da;
-      margin-top: 0;
+      color: #333;
     }
   </style>
-</head>
-<body>
-  <div class="announcement">
-    <h2>🔔 AkServer News & Updates</h2>
-    <p>
-      Welcome to the official AkServer update feed! This is where we’ll publish the latest news,
-      feature highlights, tips, and other important announcements. Stay tuned for regular updates here.
-    </p>
-    <p>
-      🚀 Version 2.1 is now live with major performance improvements and security enhancements.
-      This update includes improved file syncing, faster transfers, and a better offline experience.
-      Please make sure you’ve installed the latest build from the official installer.
-    </p>
-    <p>
-      🔐 New authentication features are being rolled out to improve secure device linking.
-      A better OTP UI, simplified device registration, and trial-mode clarity are now active.
-    </p>
-    <p>
-      💡 Tips: Did you know you can hover over any uploaded file to preview it faster?
-      Or use the device nickname field to identify uploads easily from each source?
-    </p>
-    <p>
-      📢 Reminder: The AkServer team is building new integrations for a future Android app release!
-      This will allow easier camera sync, direct gallery access, and offline-first control with secure HTTPS.
-    </p>
-    <p>
-      Thank you for using AkServer. Your feedback keeps us improving every day.
-    </p>
-  </div>
-
   <script>
-    function sendHeight() {
+    window.onload = () => {
       const height = document.body.scrollHeight;
       parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
-    }
-
-    window.addEventListener('load', sendHeight);
-    window.addEventListener('resize', sendHeight);
+    };
   </script>
+</head>
+<body>
+  <div><strong>📢 Announcement:</strong> New version of AkServer is live!</div>
+  <div>Now supports auto-updates and theme options.</div>
+  <div>Thanks to all testers and contributors 🎉</div>
+  <div>Visit Settings > About to learn more.</div>
 </body>
 </html>
