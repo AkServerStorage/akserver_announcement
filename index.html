@@ -1,130 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>AkServer Game Notice</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AkServer Announcements</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #fff;
+      font-family: "Segoe UI", sans-serif;
+      background: #ffffff;
+      color: #222;
     }
-    #container {
-      padding: 10px;
-      text-align: center;
-    }
-    #gameWrapper {
-      display: none;
-      margin-top: 10px;
-    }
-    #board {
-      display: grid;
-      grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-      gap: 4px;
-      width: 300px;
-      height: 300px;
+    .container {
+      padding: 12px 20px;
+      max-width: 900px;
       margin: auto;
     }
-    .cell {
-      background: #eee;
-      border: 2px solid #ccc;
-      font-size: 2.5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
+    .headline {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
     }
-    .cell.disabled {
-      cursor: default;
-      color: #777;
-    }
-    button {
-      margin-top: 10px;
-      padding: 6px 12px;
+    .message {
       font-size: 1rem;
+      line-height: 1.5;
+      color: #555;
+    }
+    .divider {
+      height: 1px;
+      background: #ddd;
+      margin: 12px 0;
     }
   </style>
+  <script>
+    function sendHeight() {
+      window.parent.postMessage(
+        {
+          type: "akserver-iframe-height",
+          height: document.body.scrollHeight
+        },
+        "*"
+      );
+    }
+    window.onload = sendHeight;
+    window.onresize = sendHeight;
+  </script>
 </head>
 <body>
-  <div id="container">
-    <div id="shortMessage">
-      <strong>🎮 A quick game to refresh your mind!</strong><br>
-      <button onclick="expandGame()">Tap to Play</button>
+  <div class="container">
+    <div class="headline">🔔 Latest AkServer Updates</div>
+    <div class="message">
+      We're excited to announce a new lightweight offline mode for seamless file transfers!<br><br>
+      ⚡ Speed improvements for local sync.<br>
+      🛡️ Added enhanced security for device logins.<br>
+      📦 Desktop installer now bundles GUI + background service.<br>
+      <br>
+      Stay tuned for the Android companion app – launching soon!
     </div>
-
-    <div id="gameWrapper">
-      <div id="board"></div>
-      <div id="status">Player X's turn</div>
-      <button onclick="resetGame()">Restart</button>
+    <div class="divider"></div>
+    <div class="message" style="font-size: 0.9rem; color: #888;">
+      Last updated: June 23, 2025
     </div>
   </div>
-
-  <script>
-    let board = Array(9).fill(null);
-    let current = 'X';
-    let ended = false;
-
-    function postHeight() {
-      setTimeout(() => {
-        const height = document.body.scrollHeight;
-        parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
-      }, 50);
-    }
-
-    function expandGame() {
-      document.getElementById('shortMessage').style.display = 'none';
-      document.getElementById('gameWrapper').style.display = 'block';
-      drawBoard();
-      postHeight();
-    }
-
-    function drawBoard() {
-      const boardEl = document.getElementById('board');
-      boardEl.innerHTML = '';
-      board.forEach((val, i) => {
-        const cell = document.createElement('div');
-        cell.className = 'cell' + (val ? ' disabled' : '');
-        cell.textContent = val || '';
-        cell.onclick = () => makeMove(i);
-        boardEl.appendChild(cell);
-      });
-    }
-
-    function makeMove(i) {
-      if (ended || board[i]) return;
-      board[i] = current;
-      if (checkWin(current)) {
-        document.getElementById('status').textContent = `Player ${current} wins!`;
-        ended = true;
-      } else if (!board.includes(null)) {
-        document.getElementById('status').textContent = `It's a tie!`;
-        ended = true;
-      } else {
-        current = current === 'X' ? 'O' : 'X';
-        document.getElementById('status').textContent = `Player ${current}'s turn`;
-      }
-      drawBoard();
-    }
-
-    function checkWin(p) {
-      const winPatterns = [
-        [0,1,2], [3,4,5], [6,7,8],
-        [0,3,6], [1,4,7], [2,5,8],
-        [0,4,8], [2,4,6]
-      ];
-      return winPatterns.some(pattern => pattern.every(i => board[i] === p));
-    }
-
-    function resetGame() {
-      board = Array(9).fill(null);
-      current = 'X';
-      ended = false;
-      document.getElementById('status').textContent = `Player ${current}'s turn`;
-      drawBoard();
-    }
-
-    // Auto-resize iframe height on initial load
-    window.onload = postHeight;
-  </script>
 </body>
 </html>
