@@ -11,7 +11,7 @@
       background: #fff;
       color: #333;
       font-size: 15px;
-      overflow: hidden; /* 💡 prevents scrollbars */
+      overflow: hidden;
       position: relative;
     }
     #toggleBtn {
@@ -25,6 +25,7 @@
       font-size: 13px;
       border-radius: 4px;
       cursor: pointer;
+      display: none; /* 👈 Hidden by default */
     }
     #message {
       padding-top: 30px;
@@ -36,29 +37,37 @@
 
   <div id="message">
     📢 Welcome to AkServer!<br>
-    New features are rolling out.<br>
-    Please check the dashboard regularly.<br>
+    Just a short note.<br>
+    <!-- Keep extra inside span for optional expansion -->
+    <span id="extra" style="display: none;">
+      This is more content that expands the message if needed.
+    </span>
   </div>
 
   <script>
     let expanded = false;
+    const extra = document.getElementById('extra');
+    const btn = document.getElementById('toggleBtn');
 
     function toggleHeight() {
-      const extra = document.getElementById('extra');
-      const btn = document.getElementById('toggleBtn');
       const newHeight = expanded ? 80 : 260;
-
       extra.style.display = expanded ? 'none' : 'inline';
       btn.textContent = expanded ? 'Show More' : 'Show Less';
       expanded = !expanded;
 
-      // Notify the parent window (AkServer iframe container)
       parent.postMessage({ type: 'akserver-iframe-height', height: newHeight }, '*');
     }
 
-    // Send initial height on load (in case frame loads late)
+    // On load, check if extra content exists
     window.onload = () => {
-      parent.postMessage({ type: 'akserver-iframe-height', height: 80 }, '*');
+      const hasExtraContent = extra.textContent.trim().length > 10;
+      if (hasExtraContent) {
+        btn.style.display = 'block';
+        parent.postMessage({ type: 'akserver-iframe-height', height: 80 }, '*');
+      } else {
+        // Adjust height for short message only
+        parent.postMessage({ type: 'akserver-iframe-height', height: 100 }, '*');
+      }
     };
   </script>
 </body>
