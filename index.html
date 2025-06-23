@@ -1,71 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8" />
   <title>AkServer Announcement</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       margin: 0;
+      padding: 10px;
       font-family: sans-serif;
       background: #fff;
+      color: #333;
+      font-size: 15px;
     }
-
-    #wrapper {
-      padding: 10px 15px;
-      transition: max-height 0.4s ease;
-      overflow: hidden;
-      max-height: 140px; /* Default collapsed height */
-    }
-
-    #toggle-btn {
-      display: block;
-      width: 100%;
-      padding: 8px;
-      text-align: center;
-      background: #0078d4;
+    #moreBtn {
+      background: #0088cc;
       color: white;
       border: none;
+      padding: 6px 12px;
+      margin-top: 10px;
       cursor: pointer;
-      font-size: 14px;
-    }
-
-    #content {
-      font-size: 14px;
-      line-height: 1.5em;
+      border-radius: 4px;
     }
   </style>
 </head>
 <body>
-  <div id="wrapper">
-    <div id="content">
-      <p>📢 Welcome to AkServer! This is your professional file sync and sharing platform.</p>
-      <p>🎮 New Feature: Now play games like Tic Tac Toe inside the app – powered by GitHub Pages!</p>
-      <p>🚀 Tip: AkServer works fully offline with one-click HTTPS install. Stay secure, always.</p>
-      <p>🛠️ Check for updates, features, or events right here in the announcement window.</p>
-    </div>
+  <div id="content">
+    📢 Welcome to AkServer!<br>
+    New features are rolling out.<br>
+    Please check the dashboard regularly.<br>
+    <span style="display: none;" id="extra">Here’s more information about updates, bug fixes, and future plans for AkServer. Stay tuned and connect with us!</span>
+    <br>
+    <button id="moreBtn" onclick="toggleHeight()">Show More</button>
   </div>
 
-  <button id="toggle-btn">Show More</button>
-
   <script>
-    const wrapper = document.getElementById("wrapper");
-    const toggleBtn = document.getElementById("toggle-btn");
     let expanded = false;
 
-    function sendHeight() {
-      const height = document.body.scrollHeight;
-      parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
+    function toggleHeight() {
+      const extra = document.getElementById('extra');
+      const btn = document.getElementById('moreBtn');
+      const targetHeight = expanded ? 80 : 250;
+
+      extra.style.display = expanded ? 'none' : 'inline';
+      btn.textContent = expanded ? 'Show More' : 'Show Less';
+      expanded = !expanded;
+
+      // Send height update to parent
+      parent.postMessage({ type: 'akserver-iframe-height', height: targetHeight }, '*');
     }
 
-    toggleBtn.onclick = () => {
-      expanded = !expanded;
-      wrapper.style.maxHeight = expanded ? '1000px' : '140px';
-      toggleBtn.textContent = expanded ? 'Show Less' : 'Show More';
-      setTimeout(sendHeight, 400); // After transition
-    };
-
-    window.onload = sendHeight;
+    // 🚫 Do not send any message on load — starts at 80px naturally
   </script>
 </body>
 </html>
