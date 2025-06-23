@@ -13,13 +13,9 @@
       color: #333;
       overflow-x: hidden;
     }
-    #message-container {
-      max-height: none;
-      overflow: hidden;
-    }
     #toggleBtn {
       position: absolute;
-      top: 6px;
+      top: 8px;
       right: 12px;
       font-size: 12px;
       background: #0078d4;
@@ -31,55 +27,65 @@
       display: none;
       z-index: 10;
     }
+    #message-container {
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    img {
+      max-width: 100%;
+      margin-top: 10px;
+    }
   </style>
 </head>
-    <body>
+<body>
+
   <button id="toggleBtn" onclick="toggleExpand()">Show More</button>
 
-  <div id="message-container" id="content">
+  <div id="message-container">
     📢 Welcome to AkServer!<br>
     PERSONAL file storing system<br>
     this is what we build <br>
-        📢 Welcome to AkServer!<br>
-    PERSONAL file storing system<br>
-    this is what we build <br>
-    comeplet control over you ny you for you be you<br>
-    
+    Complete control over you, by you, for you. Be you.<br>
+    📢 Welcome again!<br>
+    Announcements will appear here.<br>
+    Updates are served fresh.<br>
   </div>
 
+  <img src="https://akserverstorage.github.io/akserver_announcement/logo.png" />
 
   <script>
     const btn = document.getElementById('toggleBtn');
     const content = document.getElementById('message-container');
     let expanded = false;
+    let collapsedHeight = 80;
+
+    function sendHeight() {
+      const height = content.scrollHeight + 30;
+      parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
+    }
 
     function toggleExpand() {
       expanded = !expanded;
       btn.textContent = expanded ? 'Show Less' : 'Show More';
-      const newHeight = expanded ? content.scrollHeight + 40 : 140;
-      parent.postMessage({ type: 'akserver-iframe-height', height: newHeight }, '*');
+      if (expanded) {
+        content.style.maxHeight = content.scrollHeight + 'px';
+      } else {
+        content.style.maxHeight = collapsedHeight + 'px';
+      }
+      setTimeout(sendHeight, 200);  // allow animation to finish
     }
 
     window.onload = function () {
-      const measured = content.scrollHeight;
-      if (measured > 100) {
+      const actualHeight = content.scrollHeight;
+      if (actualHeight > collapsedHeight + 20) {
         btn.style.display = 'block';
-        parent.postMessage({ type: 'akserver-iframe-height', height: 140 }, '*');
+        content.style.maxHeight = collapsedHeight + 'px';
+        parent.postMessage({ type: 'akserver-iframe-height', height: collapsedHeight + 40 }, '*');
       } else {
-        parent.postMessage({ type: 'akserver-iframe-height', height: measured + 20 }, '*');
+        content.style.maxHeight = actualHeight + 'px';
+        parent.postMessage({ type: 'akserver-iframe-height', height: actualHeight + 40 }, '*');
       }
     };
   </script>
-      <img src="https://akserverstorage.github.io/akserver_announcement/logo.png" style="max-width:100%;">
-  
-<div id="message-container" id="content">
-    📢 Welcome to AkServer!<br>
-    PERSONAL file storing system<br>
-    this is what we build <br>
-        📢 Welcome to AkServer!<br>
-    PERSONAL file storing system<br>
-    this is what we build <br>
-    comeplet control over you ny you for you be you<br>
-    
-  </div>
+</body>
 </html>
