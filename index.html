@@ -6,67 +6,62 @@
   <style>
     body {
       margin: 0;
-      padding: 12px;
+      padding: 12px 16px 10px 16px;
       font-family: "Segoe UI", sans-serif;
+      font-size: 15px;
       background: #fff;
       color: #333;
-      font-size: 15px;
+      overflow-x: hidden;
+    }
+    #message-container {
+      max-height: none;
       overflow: hidden;
-      position: relative;
     }
     #toggleBtn {
       position: absolute;
-      top: 8px;
-      right: 10px;
+      top: 6px;
+      right: 12px;
+      font-size: 12px;
       background: #0078d4;
       color: white;
       border: none;
-      padding: 4px 10px;
-      font-size: 13px;
       border-radius: 4px;
+      padding: 4px 10px;
       cursor: pointer;
-      display: none; /* 👈 Hidden by default */
-    }
-    #message {
-      padding-top: 30px;
+      display: none;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
-  <button id="toggleBtn" onclick="toggleHeight()">Show More</button>
+  <button id="toggleBtn" onclick="toggleExpand()">Show More</button>
 
-  <div id="message">
+  <div id="message-container" id="content">
     📢 Welcome to AkServer!<br>
-    Just a short note.<br>
-    <!-- Keep extra inside span for optional expansion -->
-    <span id="extra" style="display: none;">
-      This is more content that expands the message if needed.
-    </span>
+    Stay updated with important announcements, changes, and features.<br><br>
+    We’ve introduced a new feature: folder auto-sync with intelligent device detection, offline AI assistant integration, and now game previews inside AkServer WebView. 🎮<br><br>
+    You can manage storage, devices, and preview files — all in one beautiful dashboard.
   </div>
 
   <script>
-    let expanded = false;
-    const extra = document.getElementById('extra');
     const btn = document.getElementById('toggleBtn');
+    const content = document.getElementById('message-container');
+    let expanded = false;
 
-    function toggleHeight() {
-      const newHeight = expanded ? 80 : 260;
-      extra.style.display = expanded ? 'none' : 'inline';
-      btn.textContent = expanded ? 'Show More' : 'Show Less';
+    function toggleExpand() {
       expanded = !expanded;
-
+      btn.textContent = expanded ? 'Show Less' : 'Show More';
+      const newHeight = expanded ? content.scrollHeight + 40 : 100;
       parent.postMessage({ type: 'akserver-iframe-height', height: newHeight }, '*');
     }
 
-    // On load, check if extra content exists
-    window.onload = () => {
-      const hasExtraContent = extra.textContent.trim().length > 10;
-      if (hasExtraContent) {
+    window.onload = function () {
+      const measured = content.scrollHeight;
+      if (measured > 100) {
         btn.style.display = 'block';
-        parent.postMessage({ type: 'akserver-iframe-height', height: 80 }, '*');
-      } else {
-        // Adjust height for short message only
         parent.postMessage({ type: 'akserver-iframe-height', height: 100 }, '*');
+      } else {
+        parent.postMessage({ type: 'akserver-iframe-height', height: measured + 20 }, '*');
       }
     };
   </script>
