@@ -1,37 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Announcement</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AkServer Announcements</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      background: transparent;
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffffff;
+      color: #333;
+      padding: 16px;
+      box-sizing: border-box;
+      text-align: center;
     }
 
-    .card {
-      padding: 16px 20px;
-      font-size: 12px;
-      line-height: 1.5;
-      background: white;
+    .announcement-card {
+      max-width: 500px;
+      margin: 0 auto;
+      background: #f0f2f5;
+      padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      color: #222;
+      box-shadow: 0 0 8px rgba(0,0,0,0.08);
     }
 
-    .title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 6px;
+    h2 {
+      margin-top: 0;
+      font-size: 1.4em;
+      color: #007bff;
     }
+
+    .message {
+      font-size: 0.95em;
+      margin-top: 12px;
+    }
+
+    /* For future: uncomment this to show user count */
+    /* .user-count {
+      margin-top: 16px;
+      font-size: 0.9em;
+      color: #888;
+    } */
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="title">📢 Latest Announcement</div>
-    AkServer 1.2 now supports smart sync folders and tray icon control on Windows.
+  <div class="announcement-card">
+    <h2>📢 Latest News</h2>
+    <div class="message">
+      AkServer is now better than ever. Thank you for being part of our journey.
+    </div>
+
+    <!-- User count hidden but available -->
+    <!--
+    <div class="user-count" id="userCount"></div>
+    -->
+
   </div>
+
+  <script>
+    fetch("https://script.google.com/macros/s/AKfycbwOu9GsmFqve9OA6qvz-VzNg53u6aX36iUYzK53gN8RvVWMkJNss4SMjCPgWMR1oCUU/exec")
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.count) {
+          console.log("User count fetched:", data.count);
+
+          // For future: when ready, uncomment this
+          // document.getElementById("userCount").textContent =
+          //   `🔢 ${data.count}+ devices using AkServer`;
+        }
+      })
+      .catch(err => {
+        console.error("Failed to fetch count:", err);
+      });
+  </script>
 </body>
 </html>
