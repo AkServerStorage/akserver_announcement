@@ -6,17 +6,16 @@
   <style>
     body {
       margin: 0;
-      padding: 12px 16px 10px 16px;
+      padding: 12px 16px;
       font-family: "Segoe UI", sans-serif;
       font-size: 15px;
       background: #fff;
       color: #333;
-      overflow-x: hidden;
     }
     #toggleBtn {
       position: absolute;
-      top: 8px;
-      right: 12px;
+      top: 10px;
+      right: 14px;
       font-size: 12px;
       background: #0078d4;
       color: white;
@@ -44,11 +43,11 @@
   <div id="message-container">
     📢 Welcome to AkServer!<br>
     PERSONAL file storing system<br>
-    this is what we build <br>
-    Complete control over you, by you, for you. Be you.<br>
-    📢 Welcome again!<br>
-    Announcements will appear here.<br>
-    Updates are served fresh.<br>
+    this is what we build<br>
+    Full control, offline syncing, instant sharing.<br>
+    🔒 Private, 🔄 Flexible, 🌐 Local First.<br>
+    ✨ Now with Smart Upload Automation.<br>
+    🎮 Play mode coming soon inside dashboard.<br>
   </div>
 
   <img src="https://akserverstorage.github.io/akserver_announcement/logo.png" />
@@ -59,9 +58,8 @@
     let expanded = false;
     let collapsedHeight = 80;
 
-    function sendHeight() {
-      const height = content.scrollHeight + 30;
-      parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
+    function sendHeight(height) {
+      parent.postMessage({ type: 'akserver-iframe-height', height: height }, '*');
     }
 
     function toggleExpand() {
@@ -69,21 +67,22 @@
       btn.textContent = expanded ? 'Show Less' : 'Show More';
       if (expanded) {
         content.style.maxHeight = content.scrollHeight + 'px';
+        sendHeight(content.scrollHeight + 100);
       } else {
         content.style.maxHeight = collapsedHeight + 'px';
+        sendHeight(collapsedHeight + 40);
       }
-      setTimeout(sendHeight, 200);  // allow animation to finish
     }
 
     window.onload = function () {
-      const actualHeight = content.scrollHeight;
-      if (actualHeight > collapsedHeight + 20) {
+      const measured = content.scrollHeight;
+      if (measured > collapsedHeight + 20) {
         btn.style.display = 'block';
         content.style.maxHeight = collapsedHeight + 'px';
-        parent.postMessage({ type: 'akserver-iframe-height', height: collapsedHeight + 40 }, '*');
+        sendHeight(collapsedHeight + 40);
       } else {
-        content.style.maxHeight = actualHeight + 'px';
-        parent.postMessage({ type: 'akserver-iframe-height', height: actualHeight + 40 }, '*');
+        content.style.maxHeight = measured + 'px';
+        sendHeight(measured + 40);
       }
     };
   </script>
