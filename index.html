@@ -1,83 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tic‑Tac‑Toe</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AkServer Announcements</title>
   <style>
-    body { display:flex; justify-content:center; align-items:center; height:100vh; margin:0; background:#f0f0f0; }
-    #board { display:grid; grid-template:repeat(3,1fr)/repeat(3,1fr); gap:4px; width:300px; height:300px; }
-    .cell {
-      display:flex; justify-content:center; align-items:center;
-      font-size:2.5rem; background:#fff; border:2px solid #ccc;
-      cursor:pointer; user-select:none;
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      color: #333;
+      line-height: 1.6;
     }
-    .cell.disabled { cursor: default; color:#555; }
-    #status {
-      text-align:center; margin-top:20px; font-size:1.2rem;
+
+    .announcement {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
-    button {margin-top:10px; padding:8px 12px; font-size:1rem;}
+
+    h2 {
+      color: #0a74da;
+      margin-top: 0;
+    }
   </style>
 </head>
 <body>
-  <div>
-    <div id="board"></div>
-    <div id="status">Player X’s turn</div>
-    <button onclick="resetGame()">Restart</button>
+  <div class="announcement">
+    <h2>🔔 AkServer News & Updates</h2>
+    <p>
+      Welcome to the official AkServer update feed! This is where we’ll publish the latest news,
+      feature highlights, tips, and other important announcements. Stay tuned for regular updates here.
+    </p>
+    <p>
+      🚀 Version 2.1 is now live with major performance improvements and security enhancements.
+      This update includes improved file syncing, faster transfers, and a better offline experience.
+      Please make sure you’ve installed the latest build from the official installer.
+    </p>
+    <p>
+      🔐 New authentication features are being rolled out to improve secure device linking.
+      A better OTP UI, simplified device registration, and trial-mode clarity are now active.
+    </p>
+    <p>
+      💡 Tips: Did you know you can hover over any uploaded file to preview it faster?
+      Or use the device nickname field to identify uploads easily from each source?
+    </p>
+    <p>
+      📢 Reminder: The AkServer team is building new integrations for a future Android app release!
+      This will allow easier camera sync, direct gallery access, and offline-first control with secure HTTPS.
+    </p>
+    <p>
+      Thank you for using AkServer. Your feedback keeps us improving every day.
+    </p>
   </div>
 
   <script>
-    const boardEl = document.getElementById('board');
-    const statusEl = document.getElementById('status');
-    let board = Array(9).fill(null);
-    let current = 'X';
-    let ended = false;
-
-    function drawBoard() {
-      boardEl.innerHTML = '';
-      board.forEach((mark, idx) => {
-        const c = document.createElement('div');
-        c.className = 'cell' + (mark ? ' disabled' : '');
-        c.textContent = mark || '';
-        c.onclick = () => makeMove(idx);
-        boardEl.append(c);
-      });
+    function sendHeight() {
+      const height = document.body.scrollHeight;
+      parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
     }
 
-    function makeMove(idx) {
-      if (ended || board[idx]) return;
-      board[idx] = current;
-      if (checkWin(current)) {
-        statusEl.textContent = `Player ${current} wins!`;
-        ended = true;
-      } else if (!board.includes(null)) {
-        statusEl.textContent = "It's a tie!";
-        ended = true;
-      } else {
-        current = current === 'X' ? 'O' : 'X';
-        statusEl.textContent = `Player ${current}’s turn`;
-      }
-      drawBoard();
-    }
-
-    function checkWin(p) {
-      const wins = [
-        [0,1,2],[3,4,5],[6,7,8],
-        [0,3,6],[1,4,7],[2,5,8],
-        [0,4,8],[2,4,6]
-      ];
-      return wins.some(line => line.every(i => board[i] === p));
-    }
-
-    function resetGame() {
-      board.fill(null);
-      current = 'X';
-      ended = false;
-      statusEl.textContent = `Player ${current}’s turn`;
-      drawBoard();
-    }
-
-    drawBoard();
+    window.addEventListener('load', sendHeight);
+    window.addEventListener('resize', sendHeight);
   </script>
 </body>
 </html>
