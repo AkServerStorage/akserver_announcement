@@ -11,6 +11,7 @@
       background: #fff;
       color: #333;
       font-size: 15px;
+      overflow: hidden; /* 💡 prevents scrollbars */
       position: relative;
     }
     #toggleBtn {
@@ -52,14 +53,20 @@
     function toggleHeight() {
       const extra = document.getElementById('extra');
       const btn = document.getElementById('toggleBtn');
-      const targetHeight = expanded ? 80 : 260;
+      const newHeight = expanded ? 80 : 260;
 
       extra.style.display = expanded ? 'none' : 'inline';
       btn.textContent = expanded ? 'Show More' : 'Show Less';
       expanded = !expanded;
 
-      parent.postMessage({ type: 'akserver-iframe-height', height: targetHeight }, '*');
+      // Notify the parent window (AkServer iframe container)
+      parent.postMessage({ type: 'akserver-iframe-height', height: newHeight }, '*');
     }
+
+    // Send initial height on load (in case frame loads late)
+    window.onload = () => {
+      parent.postMessage({ type: 'akserver-iframe-height', height: 80 }, '*');
+    };
   </script>
 </body>
 </html>
