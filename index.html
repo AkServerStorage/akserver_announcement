@@ -56,7 +56,7 @@
     function toggleExpand() {
       expanded = !expanded;
       btn.textContent = expanded ? 'Show Less' : 'Show More';
-      const newHeight = expanded ? content.scrollHeight + 40 : 100;
+      const newHeight = expanded ? content.scrollHeight + 40 : 140;
       parent.postMessage({ type: 'akserver-iframe-height', height: newHeight }, '*');
     }
 
@@ -64,7 +64,7 @@
       const measured = content.scrollHeight;
       if (measured > 100) {
         btn.style.display = 'block';
-        parent.postMessage({ type: 'akserver-iframe-height', height: 100 }, '*');
+        parent.postMessage({ type: 'akserver-iframe-height', height: 140 }, '*');
       } else {
         parent.postMessage({ type: 'akserver-iframe-height', height: measured + 20 }, '*');
       }
