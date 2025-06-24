@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AkServer Launch Announcement</title>
+  <title>AkServer Announcement</title>
   <style>
     html, body {
       margin: 0;
@@ -55,6 +55,7 @@
       cursor: pointer;
       z-index: 10;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: none;
     }
   </style>
 </head>
@@ -64,7 +65,9 @@
     <button id="toggleButton" onclick="toggleContent()">Show More</button>
     <div class="announcement-box" id="announcementBox">
       <div class="line emoji">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
-      
+      <div class="line emoji">🔒 No Internet. No Signups. No Tracking.</div>
+      <div class="line emoji">📂 Instant File Sync & Offline Access.</div>
+      <div class="line emoji" id="extraLine" style="display: none;">⚡ Built for speed. Designed for privacy. Powered by you.</div>
     </div>
   </div>
 
@@ -87,6 +90,17 @@
 
       expanded = !expanded;
     }
+
+    // 👇 Auto-hide the toggle button if no overflow
+    window.addEventListener('load', () => {
+      const btn = document.getElementById("toggleButton");
+      const containerHeight = document.body.scrollHeight;
+      if (containerHeight > 100) {
+        btn.style.display = "inline-block";
+      } else {
+        btn.style.display = "none";
+      }
+    });
   </script>
 
 </body>
