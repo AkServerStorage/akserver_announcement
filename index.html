@@ -6,25 +6,25 @@
   <style>
     body {
       margin: 0;
-      padding: 6px;
+      padding: 16px;
       font-family: "Segoe UI", sans-serif;
       background: #ffffff;
       color: #333;
       text-align: center;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     .announcement-box {
       background: #f8f9fa;
       border-radius: 12px;
-      padding: 10px;
+      padding: 10px 16px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       max-width: 480px;
       margin: 0 auto;
     }
 
     .line {
-      margin: 1px 0;
+      margin: 10px 0;
       font-size: 1.1rem;
       line-height: 1.4;
     }
@@ -36,13 +36,54 @@
     .emoji {
       font-size: 1.2rem;
     }
+
+    #toggleBtn {
+      margin-top: 14px;
+      font-size: 13px;
+      background: #0078d4;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <div class="announcement-box">
+  <div class="announcement-box" id="content">
     <div class="line emoji">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
     <div class="line emoji">🔒 No Internet. No Signups. No Tracking.</div>
     <div class="line emoji">📂 Instant File Sync & Offline Access.</div>
   </div>
+
+  <button id="toggleBtn" style="display:none;" onclick="toggleExpand()">Show More</button>
+
+  <script>
+    const btn = document.getElementById("toggleBtn");
+    const content = document.getElementById("content");
+    let expanded = false;
+    const collapsedHeight = 130;
+
+    function postHeight(height) {
+      parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
+    }
+
+    function toggleExpand() {
+      expanded = !expanded;
+      btn.textContent = expanded ? "Show Less" : "Show More";
+      const newHeight = expanded ? content.scrollHeight + 50 : collapsedHeight;
+      postHeight(newHeight);
+    }
+
+    window.onload = () => {
+      const fullHeight = content.scrollHeight + 50;
+      if (fullHeight > collapsedHeight + 20) {
+        btn.style.display = 'inline-block';
+        postHeight(collapsedHeight);
+      } else {
+        postHeight(fullHeight);
+      }
+    };
+  </script>
 </body>
 </html>
