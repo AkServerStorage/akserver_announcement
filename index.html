@@ -21,7 +21,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       max-width: 480px;
       margin: 0 auto;
-      position: relative; /* for absolute button */
+      position: relative;
     }
 
     .line {
@@ -71,25 +71,27 @@
   <script>
     const toggleBtn = document.getElementById("toggleButton");
     const extraLine = document.getElementById("extraLine");
-    const parentFrame = window.parent.document.getElementById("announcementFrame");
-
     let isExpanded = false;
 
     function toggleAnnouncement() {
-      if (isExpanded) {
-        extraLine.style.display = "none";
-        toggleBtn.textContent = "Show More";
-        // Shrink parent iframe height
-        if (parentFrame) parentFrame.style.height = "100px";
-      } else {
-        extraLine.style.display = "block";
-        toggleBtn.textContent = "Show Less";
-        // Expand parent iframe height
-        if (parentFrame) parentFrame.style.height = "260px";
-      }
-
       isExpanded = !isExpanded;
+      extraLine.style.display = isExpanded ? "block" : "none";
+      toggleBtn.textContent = isExpanded ? "Show Less" : "Show More";
+
+      // Tell parent to resize the iframe
+      window.parent.postMessage({
+        type: 'akserver-iframe-height',
+        height: isExpanded ? 260 : 100
+      }, '*');
     }
+
+    // On load, force reset height
+    window.onload = () => {
+      window.parent.postMessage({
+        type: 'akserver-iframe-height',
+        height: 100
+      }, '*');
+    };
   </script>
 </body>
 </html>
