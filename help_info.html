@@ -87,15 +87,16 @@
   </section>
 
 <script>
-  // Push history state when help page loads
-  history.pushState({ page: "help" }, "Help", "#help");
-
-  window.addEventListener("popstate", function () {
-    // User navigated back — notify parent
+  // Send message to parent when user presses back
+  window.addEventListener("popstate", () => {
     if (window.parent) {
       window.parent.postMessage({ type: "akserver-back-to-announcement" }, "*");
     }
   });
+
+  // This prevents back from working by replacing history
+  history.replaceState({ page: "help" }, "", "#help");
+  history.pushState({ page: "block" }, "", "#block");
 </script>
 
 </body>
