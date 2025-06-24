@@ -95,7 +95,7 @@
     const btn = document.getElementById('toggleBtn');
     const content = document.getElementById('message-container');
     let expanded = false;
-    let collapsedHeight = 80;
+    let collapsedHeight = 60;
 
     function sendHeight(height) {
       parent.postMessage({ type: 'akserver-iframe-height', height: height }, '*');
@@ -106,7 +106,7 @@
       btn.textContent = expanded ? 'Show Less' : 'Show More';
       if (expanded) {
         content.style.maxHeight = content.scrollHeight + 'px';
-        sendHeight(content.scrollHeight + 100);
+        sendHeight(content.scrollHeight + 180);
       } else {
         content.style.maxHeight = collapsedHeight + 'px';
         sendHeight(collapsedHeight + 40);
