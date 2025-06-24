@@ -82,12 +82,14 @@
     }
 
 <script>
-  // Prevent iframe history from going backwards
-  history.replaceState({ page: "announcement" }, "", "#announcement");
-  history.pushState({ page: "block" }, "", "#block");
+  // Preserve any existing hash (like #more) while protecting back behavior
+  const currentHash = window.location.hash || "#announcement";
 
-  // Listen for back and notify parent to collapse if needed
+  history.replaceState({ page: "announcement" }, "", currentHash);
+  history.pushState({ page: "block" }, "", currentHash);
+
   window.addEventListener("popstate", () => {
+    // On device back, notify parent to collapse the iframe
     if (window.parent) {
       window.parent.postMessage({ type: "akserver-back-to-announcement" }, "*");
     }
