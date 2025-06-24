@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AkServer Launch Announcement</title>
+  <title>AkServer Announcement</title>
   <style>
     body {
       margin: 0;
@@ -11,13 +11,13 @@
       background: #ffffff;
       color: #333;
       text-align: center;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     .announcement-box {
       background: #f8f9fa;
       border-radius: 12px;
-      padding: 10px 16px;
+      padding: 12px 16px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       max-width: 480px;
       margin: 0 auto;
@@ -46,23 +46,26 @@
       border-radius: 6px;
       padding: 6px 14px;
       cursor: pointer;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="announcement-box" id="content">
+  <div class="announcement-box" id="messageContainer">
     <div class="line emoji">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
     <div class="line emoji">🔒 No Internet. No Signups. No Tracking.</div>
     <div class="line emoji">📂 Instant File Sync & Offline Access.</div>
+    <div class="line emoji">🎮 Play Mode Coming Soon!</div>
+    <div class="line emoji">✨ Smart Upload Automation Built-In.</div>
   </div>
 
-  <button id="toggleBtn" style="display:none;" onclick="toggleExpand()">Show More</button>
+  <button id="toggleBtn" onclick="toggleExpand()">Show More</button>
 
   <script>
-    const btn = document.getElementById("toggleBtn");
-    const content = document.getElementById("content");
+    const container = document.getElementById('messageContainer');
+    const toggleBtn = document.getElementById('toggleBtn');
     let expanded = false;
-    const collapsedHeight = 130;
+    const collapsedHeight = 150;
 
     function postHeight(height) {
       parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
@@ -70,15 +73,15 @@
 
     function toggleExpand() {
       expanded = !expanded;
-      btn.textContent = expanded ? "Show Less" : "Show More";
-      const newHeight = expanded ? content.scrollHeight + 50 : collapsedHeight;
+      toggleBtn.textContent = expanded ? 'Show Less' : 'Show More';
+      const newHeight = expanded ? container.scrollHeight + 80 : collapsedHeight;
       postHeight(newHeight);
     }
 
     window.onload = () => {
-      const fullHeight = content.scrollHeight + 50;
+      const fullHeight = container.scrollHeight + 80;
       if (fullHeight > collapsedHeight + 20) {
-        btn.style.display = 'inline-block';
+        toggleBtn.style.display = 'inline-block';
         postHeight(collapsedHeight);
       } else {
         postHeight(fullHeight);
