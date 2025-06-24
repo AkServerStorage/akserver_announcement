@@ -81,18 +81,18 @@
       }
     }
 
-    window.onload = function () {
-      const measuredHeight = content.scrollHeight;
-      if (measuredHeight > collapsedHeight + 20) {
-        btn.style.display = 'block';
-        content.style.maxHeight = collapsedHeight + 'px';
-        sendHeight(collapsedHeight);
-      } else {
-        content.style.maxHeight = measuredHeight + 'px';
-        sendHeight(measuredHeight);
-      }
-    };
-  </script>
+<script>
+  // Prevent iframe history from going backwards
+  history.replaceState({ page: "announcement" }, "", "#announcement");
+  history.pushState({ page: "block" }, "", "#block");
+
+  // Listen for back and notify parent to collapse if needed
+  window.addEventListener("popstate", () => {
+    if (window.parent) {
+      window.parent.postMessage({ type: "akserver-back-to-announcement" }, "*");
+    }
+  });
+</script>
 
 </body>
 </html>
