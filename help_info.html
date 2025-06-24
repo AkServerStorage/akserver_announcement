@@ -83,17 +83,5 @@
   </section>
 
 </body>
-  
-<script>
-  // Push a fake state to history when help page loads
-  window.onload = function () {
-    history.pushState({ page: "help" }, "Help Info", "#info");
-  };
-
-  // Detect back navigation (device or browser back button)
-  window.onpopstate = function () {
-    parent.postMessage({ type: "akserver-iframe-back" }, "*");
-  };
-</script>
 </html>
 
