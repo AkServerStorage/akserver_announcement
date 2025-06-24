@@ -3,98 +3,105 @@
 <head>
   <meta charset="UTF-8" />
   <title>AkServer Announcement</title>
-  <link rel="stylesheet" href="iframe_style.css">
   <style>
     body {
       margin: 0;
-      padding: 12px 16px 16px;
+      padding: 16px;
       font-family: "Segoe UI", sans-serif;
-      font-size: 15px;
-      background: #fff;
+      background: #ffffff;
       color: #333;
+      text-align: center;
       overflow: hidden;
     }
 
-    #toggleBtn {
-      position: absolute;
-      top: 10px;
-      right: 16px;
-      font-size: 12px;
-      background: #0078d4;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 10px;
-      cursor: pointer;
-      display: none;
-      z-index: 10;
+    .announcement-box {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 10px 16px 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      max-width: 480px;
+      margin: 0 auto;
     }
 
-    #message-container {
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-
-    .announcement-line {
-      margin-bottom: 10px;
+    .line {
+      margin: 10px 0;
+      font-size: 1.1rem;
       line-height: 1.4;
     }
 
-    img {
-      max-width: 100%;
-      margin-top: 8px;
+    .line strong {
+      color: #0078d4;
+    }
+
+    .emoji {
+      font-size: 1.2rem;
+    }
+
+    #toggleButton {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+      font-size: 0.85rem;
+      background: #0078d4;
+      color: #fff;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
   </style>
 </head>
 <body>
 
-  <!-- Show More / Less Button -->
-  <button id="toggleBtn" onclick="toggleExpand()">Show More</button>
+  <button id="toggleButton">Show More</button>
 
-  <!-- Main Content -->
-  <div id="message-container">
-    <div class="announcement-line">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
-    <div class="announcement-line">🔒 No Internet. No Signups. No Tracking.</div>
-    <div class="announcement-line">📂 Instant File Sync & Offline Access.</div>
-    <img src="https://akserverstorage.github.io/akserver_announcement/logo.png" alt="AkServer Logo" />
+  <div class="announcement-box" id="announcementContent">
+    <div class="line emoji">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
+    <div class="line emoji">🔒 No Internet. No Signups. No Tracking.</div>
+    <div class="line emoji">📂 Instant File Sync & Offline Access.</div>
+    <div class="line emoji" id="extraLine" style="display: none;">
+      💡 Powered by freedom — No subscriptions, 100% offline control.
+    </div>
   </div>
 
   <script>
-    const btn = document.getElementById('toggleBtn');
-    const content = document.getElementById('message-container');
-    let expanded = false;
-    const collapsedHeight = 100;
+    let isExpanded = false;
 
-    function sendHeight(height) {
-      parent.postMessage({ type: 'akserver-iframe-height', height: height }, '*');
-    }
+    const toggleBtn = document.getElementById('toggleButton');
+    const extraLine = document.getElementById('extraLine');
 
-    function toggleExpand() {
-      expanded = !expanded;
-      btn.textContent = expanded ? 'Show Less' : 'Show More';
-      if (expanded) {
-        content.style.maxHeight = content.scrollHeight + 'px';
-        sendHeight(content.scrollHeight + 40);
-      } else {
-        content.style.maxHeight = collapsedHeight + 'px';
-        sendHeight(collapsedHeight);
-      }
-    }
+    toggleBtn.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+      toggleBtn.textContent = isExpanded ? 'Show Less' : 'Show More';
+      extraLine.style.display = isExpanded ? 'block' : 'none';
 
-<script>
-  // Preserve any existing hash (like #more) while protecting back behavior
-  const currentHash = window.location.hash || "#announcement";
+      // Notify parent frame to resize
+      window.parent.postMessage({
+        type: 'akserver-iframe-height',
+        height: isExpanded ? 250 : 100
+      }, '*');
 
-  history.replaceState({ page: "announcement" }, "", currentHash);
-  history.pushState({ page: "block" }, "", currentHash);
+      // Update hash for back gesture tracking
+      const newHash = isExpanded ? '#more' : '#announcement';
+      history.pushState({ page: newHash }, '', newHash);
+    });
 
-  window.addEventListener("popstate", () => {
-    // On device back, notify parent to collapse the iframe
-    if (window.parent) {
-      window.parent.postMessage({ type: "akserver-back-to-announcement" }, "*");
-    }
-  });
-</script>
+    // Back gesture handling
+    window.addEventListener('popstate', () => {
+      isExpanded = false;
+      toggleBtn.textContent = 'Show More';
+      extraLine.style.display = 'none';
+
+      window.parent.postMessage({
+        type: 'akserver-iframe-height',
+        height: 100
+      }, '*');
+    });
+
+    // Init state
+    history.replaceState({ page: "#announcement" }, "", "#announcement");
+  </script>
 
 </body>
 </html>
