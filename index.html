@@ -4,29 +4,33 @@
   <meta charset="UTF-8" />
   <title>AkServer Launch Announcement</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      padding: 16px;
+      padding: 0;
       font-family: "Segoe UI", sans-serif;
       background: #ffffff;
       color: #333;
-      text-align: center;
       overflow: hidden;
+    }
+
+    .announcement-container {
+      position: relative;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 16px 24px 24px;
+      box-sizing: border-box;
     }
 
     .announcement-box {
       background: #f8f9fa;
       border-radius: 12px;
-      padding: 14px 16px 20px;
+      padding: 16px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      max-width: 480px;
-      margin: 0 auto;
-      position: relative;
     }
 
     .line {
       margin: 10px 0;
-      font-size: 1.1rem;
+      font-size: 1rem;
       line-height: 1.4;
     }
 
@@ -35,63 +39,57 @@
     }
 
     .emoji {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
 
-#toggleButton {
-  position: absolute;
-  top: 6px;
-  left: 10px;
-  font-size: 0.7rem;
-  background: #0078d4;
-  color: #fff;
-  border: none;
-  padding: 2px 8px;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  z-index: 10;
-}
+    #toggleButton {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 0.75rem;
+      background: #0078d4;
+      color: #fff;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
   </style>
 </head>
 <body>
-  <div class="announcement-box" id="announcementContent">
-    <button id="toggleButton" onclick="toggleAnnouncement()">Show More</button>
 
-    <div class="line emoji">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
-    <div class="line emoji">🔒 No Internet. No Signups. No Tracking.</div>
-    <div class="line emoji">📂 Instant File Sync & Offline Access.</div>
-
-    <div id="extraLine" style="display: none;">
-      <div class="line emoji">💡 Powered by freedom — No subscriptions, 100% offline control.</div>
-      <div class="line emoji">📦 Works locally. Feels like the cloud. Fully yours.</div>
+  <div class="announcement-container">
+    <button id="toggleButton" onclick="toggleContent()">Show More</button>
+    <div class="announcement-box" id="announcementBox">
+      <div class="line emoji">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
+      <div class="line emoji">🔒 No Internet. No Signups. No Tracking.</div>
+      <div class="line emoji">📂 Instant File Sync & Offline Access.</div>
+      <div class="line emoji" style="display: none;" id="extraLine">⚡ Built for speed. Designed for privacy. Powered by you.</div>
     </div>
   </div>
 
   <script>
-    const toggleBtn = document.getElementById("toggleButton");
-    const extraLine = document.getElementById("extraLine");
-    let isExpanded = false;
+    let expanded = false;
 
-    function toggleAnnouncement() {
-      isExpanded = !isExpanded;
-      extraLine.style.display = isExpanded ? "block" : "none";
-      toggleBtn.textContent = isExpanded ? "Show Less" : "Show More";
+    function toggleContent() {
+      const btn = document.getElementById("toggleButton");
+      const extra = document.getElementById("extraLine");
 
-      // Tell parent to resize the iframe
-      window.parent.postMessage({
-        type: 'akserver-iframe-height',
-        height: isExpanded ? 260 : 100
-      }, '*');
+      if (!expanded) {
+        extra.style.display = "block";
+        btn.textContent = "Show Less";
+        parent.postMessage({ type: "akserver-iframe-height", height: document.body.scrollHeight }, "*");
+      } else {
+        extra.style.display = "none";
+        btn.textContent = "Show More";
+        parent.postMessage({ type: "akserver-iframe-height", height: 100 }, "*");
+      }
+
+      expanded = !expanded;
     }
-
-    // On load, force reset height
-    window.onload = () => {
-      window.parent.postMessage({
-        type: 'akserver-iframe-height',
-        height: 100
-      }, '*');
-    };
   </script>
+
 </body>
 </html>
