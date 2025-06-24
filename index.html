@@ -1,92 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>AkServer Announcement</title>
   <style>
     body {
       margin: 0;
-      padding: 12px 16px;
+      padding: 16px;
       font-family: "Segoe UI", sans-serif;
-      font-size: 15px;
-      background: #fff;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
       color: #333;
+      text-align: center;
     }
-    #toggleBtn {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      font-size: 12px;
-      background: #0078d4;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 10px;
-      cursor: pointer;
-      display: none;
-      z-index: 10;
+
+    .announcement-box {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      display: inline-block;
+      max-width: 480px;
+      width: 90%;
+      margin-top: 12px;
     }
-    #message-container {
-      overflow: hidden;
-      transition: max-height 0.3s ease;
+
+    .line {
+      font-size: 1.05rem;
+      margin: 10px 0;
     }
-    img {
-      max-width: 100%;
-      margin-top: 10px;
+
+    .line.strong {
+      font-weight: bold;
+      color: #0078D4;
+    }
+
+    .line.highlight {
+      font-style: italic;
+      color: #28a745;
+    }
+
+    .emojis {
+      font-size: 1.2rem;
     }
   </style>
 </head>
-
-  <div style="line-height: 1.6; font-size: 15px;">
-  🚀 <strong>AkServer is now LIVE!</strong><br>
-  🔐 <em>Be your own cloud</em> — no logins, no limits.<br>
-  🗃️ Save, sync & share — <strong>privately and offline</strong>.<br>
-  ⚡ Superfast uploads. 🎯 Full device control.<br>
-  🧠 Smart. 💼 Professional. 🔄 Always yours.<br><br>
-
-  🛠️ <strong>What’s Inside:</strong><br>
-  📂 Folder sync made simple<br>
-  📡 Device registration for secure sharing<br>
-  🧩 Works offline — internet not required!<br><br>
-
-  🌟 <em>Built for creators. Loved by privacy seekers.</em><br>
-  🖥️ Launch your personal cloud today — <strong>AkServer</strong> ❤️
-</div>
-
-
-  <script>
-    const btn = document.getElementById('toggleBtn');
-    const content = document.getElementById('message-container');
-    let expanded = false;
-    let collapsedHeight = 60;
-
-    function sendHeight(height) {
-      parent.postMessage({ type: 'akserver-iframe-height', height: height }, '*');
-    }
-
-    function toggleExpand() {
-      expanded = !expanded;
-      btn.textContent = expanded ? 'Show Less' : 'Show More';
-      if (expanded) {
-        content.style.maxHeight = content.scrollHeight + 'px';
-        sendHeight(content.scrollHeight + 300);
-      } else {
-        content.style.maxHeight = collapsedHeight + 'px';
-        sendHeight(collapsedHeight + 40);
-      }
-    }
-
-    window.onload = function () {
-      const measured = content.scrollHeight;
-      if (measured > collapsedHeight + 20) {
-        btn.style.display = 'block';
-        content.style.maxHeight = collapsedHeight + 'px';
-        sendHeight(collapsedHeight + 40);
-      } else {
-        content.style.maxHeight = measured + 'px';
-        sendHeight(measured + 40);
-      }
-    };
-  </script>
+<body>
+  <div class="announcement-box">
+    <div class="line strong emojis">🧠 Smart. Secure. Yours.</div>
+    <div class="line">📡 Sync folders privately with <strong>AkServer</strong></div>
+    <div class="line highlight emojis">🔄 No subscriptions. Just freedom.</div>
+  </div>
 </body>
 </html>
