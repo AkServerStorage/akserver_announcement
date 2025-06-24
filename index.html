@@ -12,21 +12,22 @@
       color: #333;
       text-align: center;
       overflow: hidden;
+      position: relative;
     }
 
     .announcement-box {
       background: #f8f9fa;
       border-radius: 12px;
-      padding: 12px 16px;
+      padding: 14px 16px 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      max-width: 480px;
+      max-width: 500px;
       margin: 0 auto;
     }
 
     .line {
-      margin: 10px 0;
-      font-size: 1.1rem;
-      line-height: 1.4;
+      margin: 8px 0;
+      font-size: 1.05rem;
+      line-height: 1.5;
     }
 
     .line strong {
@@ -38,34 +39,37 @@
     }
 
     #toggleBtn {
-      margin-top: 14px;
-      font-size: 13px;
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 12px;
       background: #0078d4;
       color: white;
       border: none;
-      border-radius: 6px;
-      padding: 6px 14px;
+      border-radius: 4px;
+      padding: 4px 8px;
       cursor: pointer;
       display: none;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
+  <button id="toggleBtn" onclick="toggleExpand()">More</button>
+
   <div class="announcement-box" id="messageContainer">
     <div class="line emoji">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
     <div class="line emoji">🔒 No Internet. No Signups. No Tracking.</div>
     <div class="line emoji">📂 Instant File Sync & Offline Access.</div>
-    <div class="line emoji">🎮 Play Mode Coming Soon!</div>
-    <div class="line emoji">✨ Smart Upload Automation Built-In.</div>
+    <div class="line emoji extra" style="display: none;">🎮 Play Mode Coming Soon!</div>
+    <div class="line emoji extra" style="display: none;">✨ Smart Upload Automation Built-In.</div>
   </div>
-
-  <button id="toggleBtn" onclick="toggleExpand()">Show More</button>
 
   <script>
     const container = document.getElementById('messageContainer');
     const toggleBtn = document.getElementById('toggleBtn');
+    const extras = document.querySelectorAll('.extra');
     let expanded = false;
-    const collapsedHeight = 150;
 
     function postHeight(height) {
       parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
@@ -73,16 +77,20 @@
 
     function toggleExpand() {
       expanded = !expanded;
-      toggleBtn.textContent = expanded ? 'Show Less' : 'Show More';
-      const newHeight = expanded ? container.scrollHeight + 80 : collapsedHeight;
-      postHeight(newHeight);
+      toggleBtn.textContent = expanded ? 'Less' : 'More';
+      extras.forEach(line => line.style.display = expanded ? 'block' : 'none');
+
+      // After DOM updates, calculate new height
+      setTimeout(() => {
+        postHeight(container.scrollHeight + 32);
+      }, 100);
     }
 
     window.onload = () => {
-      const fullHeight = container.scrollHeight + 80;
-      if (fullHeight > collapsedHeight + 20) {
+      const fullHeight = container.scrollHeight + 32;
+      if (fullHeight > 140) {
         toggleBtn.style.display = 'inline-block';
-        postHeight(collapsedHeight);
+        postHeight(140);  // Initial collapsed height
       } else {
         postHeight(fullHeight);
       }
