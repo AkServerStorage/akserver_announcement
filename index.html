@@ -2,96 +2,97 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AkServer Launch Announcement</title>
+  <title>AkServer Announcement</title>
+  <link rel="stylesheet" href="iframe_style.css">
   <style>
     body {
       margin: 0;
-      padding: 14px 16px;
+      padding: 12px 16px 16px;
       font-family: "Segoe UI", sans-serif;
-      background: #ffffff;
+      font-size: 15px;
+      background: #fff;
       color: #333;
-      text-align: center;
       overflow: hidden;
-    }
-
-    .announcement-box {
-      background: #f8f9fa;
-      border-radius: 10px;
-      padding: 10px 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      max-width: 460px;
-      margin: 0 auto;
-      font-size: 0.95rem;
-      line-height: 1.4;
-    }
-
-    .line {
-      margin: 6px 0;
-    }
-
-    .line strong {
-      color: #0078d4;
-    }
-
-    .emoji {
-      font-size: 1.1rem;
     }
 
     #toggleBtn {
       position: absolute;
-      top: 8px;
-      right: 12px;
-      font-size: 11px;
+      top: 10px;
+      right: 16px;
+      font-size: 12px;
       background: #0078d4;
       color: white;
       border: none;
       border-radius: 4px;
-      padding: 3px 6px;
+      padding: 4px 10px;
       cursor: pointer;
       display: none;
       z-index: 10;
     }
+
+    #message-container {
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .announcement-line {
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    img {
+      max-width: 100%;
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
-  <button id="toggleBtn" onclick="toggleExpand()">More</button>
 
-  <div class="announcement-box" id="messageContainer">
-    <div class="line emoji">🎉 <strong>AkServer: Your Private Cloud</strong></div>
-    <div class="line emoji">🔒 No Internet. No Signups.</div>
-    <div class="line emoji extra" style="display: none;">📂 Offline Sync + Instant Sharing</div>
-    <div class="line emoji extra" style="display: none;">🎮 New: Game Mode Inside Dashboard!</div>
+  <!-- Show More / Less Button -->
+  <button id="toggleBtn" onclick="toggleExpand()">Show More</button>
+
+  <!-- Main Content -->
+  <div id="message-container">
+    <div class="announcement-line">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
+    <div class="announcement-line">🔒 No Internet. No Signups. No Tracking.</div>
+    <div class="announcement-line">📂 Instant File Sync & Offline Access.</div>
+    <img src="https://akserverstorage.github.io/akserver_announcement/logo.png" alt="AkServer Logo" />
   </div>
 
   <script>
-    const container = document.getElementById('messageContainer');
-    const toggleBtn = document.getElementById('toggleBtn');
-    const extras = document.querySelectorAll('.extra');
+    const btn = document.getElementById('toggleBtn');
+    const content = document.getElementById('message-container');
     let expanded = false;
+    const collapsedHeight = 100;
 
-    function postHeight(height) {
-      parent.postMessage({ type: 'akserver-iframe-height', height }, '*');
+    function sendHeight(height) {
+      parent.postMessage({ type: 'akserver-iframe-height', height: height }, '*');
     }
 
     function toggleExpand() {
       expanded = !expanded;
-      toggleBtn.textContent = expanded ? 'Less' : 'More';
-      extras.forEach(el => el.style.display = expanded ? 'block' : 'none');
-      setTimeout(() => {
-        postHeight(container.scrollHeight + 40); // Add padding
-      }, 100);
+      btn.textContent = expanded ? 'Show Less' : 'Show More';
+      if (expanded) {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        sendHeight(content.scrollHeight + 40);
+      } else {
+        content.style.maxHeight = collapsedHeight + 'px';
+        sendHeight(collapsedHeight);
+      }
     }
 
-    window.onload = () => {
-      const collapsedHeight = container.scrollHeight + 40;
-      if (collapsedHeight > 100) {
-        toggleBtn.style.display = 'inline-block';
-        extras.forEach(el => el.style.display = 'none');
-        postHeight(100);  // Match your .akserver-announcement-frame default
+    window.onload = function () {
+      const measuredHeight = content.scrollHeight;
+      if (measuredHeight > collapsedHeight + 20) {
+        btn.style.display = 'block';
+        content.style.maxHeight = collapsedHeight + 'px';
+        sendHeight(collapsedHeight);
       } else {
-        postHeight(collapsedHeight);
+        content.style.maxHeight = measuredHeight + 'px';
+        sendHeight(measuredHeight);
       }
     };
   </script>
+
 </body>
 </html>
