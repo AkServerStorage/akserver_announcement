@@ -86,18 +86,17 @@
     <p><strong>Where are files stored?</strong><br>On your own device. You control everything.</p>
   </section>
 
-  <!-- Handle Back Navigation to Restore Announcement Frame -->
-  <script>
-    // Push state for help page on load
-    window.onload = function () {
-      history.pushState({ page: "help_info" }, "help_info", "#help");
-    };
+<script>
+  // Push history state when help page loads
+  history.pushState({ page: "help" }, "Help", "#help");
 
-    // Device back triggers message to parent
-    window.onpopstate = function () {
-      parent.postMessage({ type: 'akserver-close-info' }, '*');
-    };
-  </script>
+  window.addEventListener("popstate", function () {
+    // User navigated back — notify parent
+    if (window.parent) {
+      window.parent.postMessage({ type: "akserver-back-to-announcement" }, "*");
+    }
+  });
+</script>
 
 </body>
 </html>
