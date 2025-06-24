@@ -2,56 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AkServer Announcement</title>
+  <title>AkServer – Help & Info</title>
   <style>
     body {
-      margin: 0;
-      padding: 16px;
       font-family: "Segoe UI", sans-serif;
-      background: #fff;
-      color: #333;
+      background-color: #fefefe;
+      color: #222;
+      padding: 2em;
+      max-width: 700px;
+      margin: auto;
     }
 
-    #infoIcon {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      z-index: 1000;
-      cursor: pointer;
+    h1 {
+      color: #0078d4;
     }
 
-    #infoIcon img {
-      width: 24px;
-      height: 24px;
-      opacity: 0.8;
-      transition: transform 0.2s ease;
+    h2 {
+      margin-top: 2em;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.3em;
     }
 
-    #infoIcon:hover img {
-      transform: scale(1.2);
-      opacity: 1;
+    ul {
+      padding-left: 1.4em;
     }
 
-    .message {
-      margin-top: 40px;
-      font-size: 15px;
-      line-height: 1.6;
+    footer {
+      margin-top: 3em;
+      font-size: 0.9em;
+      color: #777;
     }
   </style>
 </head>
 <body>
 
-  <!-- ℹ️ Help Icon -->
-  <a href="https://akserverstorage.github.io/help-info" target="_blank" title="Help & Info" id="infoIcon">
-    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/info-circle.svg" alt="Info" />
-  </a>
+  <h1>📘 AkServer Help & Info</h1>
+  <p>This page provides guidance for installation, usage, and updates of AkServer software.</p>
 
-  <!-- Example Message Content -->
-  <div class="message">
-    🎉 Welcome to <strong>AkServer</strong> – Your Private Cloud, Reinvented!<br>
-    🔒 No Internet. No Signups. No Tracking.<br>
-    📂 Instant File Sync & Offline Access.
-  </div>
+  <h2>🧩 Installation Steps</h2>
+  <ul>
+    <li>Download and run the Windows setup file</li>
+    <li>Follow on-screen instructions to install AkServer</li>
+    <li>After installation, the server runs automatically on startup</li>
+  </ul>
+
+  <h2>📁 Key Features</h2>
+  <ul>
+    <li>Offline and local network support</li>
+    <li>Private file sharing</li>
+    <li>Device registration with OTP login</li>
+    <li>Trial version for 60 days</li>
+  </ul>
+
+  <h2>📦 Updates & Announcements</h2>
+  <p>We post important software updates, bug fixes, and new features on this page.</p>
+
+  <footer>Last updated: June 2025</footer>
 
 </body>
 </html>
