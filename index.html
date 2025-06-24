@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <title>AkServer Announcement</title>
-  <link rel="stylesheet" href="https://akserverstorage.github.io/akserver_announcement/iframe_style.css" />
+  <link rel="stylesheet" href="iframe_style.css">
   <style>
     body {
       margin: 0;
+      padding: 12px 16px 16px;
       font-family: "Segoe UI", sans-serif;
       font-size: 15px;
-      background: #ffffff;
+      background: #fff;
       color: #333;
+      overflow: hidden;
     }
 
     #toggleBtn {
       position: absolute;
       top: 10px;
-      right: 14px;
+      right: 16px;
       font-size: 12px;
       background: #0078d4;
       color: white;
@@ -24,46 +26,37 @@
       border-radius: 4px;
       padding: 4px 10px;
       cursor: pointer;
+      display: none;
       z-index: 10;
     }
 
     #message-container {
       overflow: hidden;
       transition: max-height 0.3s ease;
-      padding: 16px;
-      line-height: 1.5;
-    }
-
-    .announcement-box {
-      background: #f8f9fa;
-      border-radius: 12px;
-      padding: 12px 16px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      max-width: 520px;
-      margin: 0 auto;
-      text-align: center;
     }
 
     .announcement-line {
-      margin: 10px 0;
-      font-size: 1rem;
+      margin-bottom: 10px;
+      line-height: 1.4;
     }
 
-    .emoji {
-      font-size: 1.2rem;
+    img {
+      max-width: 100%;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
 
+  <!-- Show More / Less Button -->
   <button id="toggleBtn" onclick="toggleExpand()">Show More</button>
 
+  <!-- Main Content -->
   <div id="message-container">
-    <div class="announcement-box">
-      <div class="announcement-line emoji">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
-      <div class="announcement-line emoji">🔒 No Internet. No Signups. No Tracking.</div>
-      <div class="announcement-line emoji">📂 Instant File Sync & Offline Access.</div>
-    </div>
+    <div class="announcement-line">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
+    <div class="announcement-line">🔒 No Internet. No Signups. No Tracking.</div>
+    <div class="announcement-line">📂 Instant File Sync & Offline Access.</div>
+    <img src="https://akserverstorage.github.io/akserver_announcement/logo.png" alt="AkServer Logo" />
   </div>
 
   <script>
@@ -84,21 +77,22 @@
         sendHeight(content.scrollHeight + 40);
       } else {
         content.style.maxHeight = collapsedHeight + 'px';
-        sendHeight(collapsedHeight + 20);
+        sendHeight(collapsedHeight);
       }
     }
 
     window.onload = function () {
-      const measured = content.scrollHeight;
-      if (measured > collapsedHeight + 20) {
+      const measuredHeight = content.scrollHeight;
+      if (measuredHeight > collapsedHeight + 20) {
         btn.style.display = 'block';
         content.style.maxHeight = collapsedHeight + 'px';
-        sendHeight(collapsedHeight + 20);
+        sendHeight(collapsedHeight);
       } else {
-        content.style.maxHeight = measured + 'px';
-        sendHeight(measured + 20);
+        content.style.maxHeight = measuredHeight + 'px';
+        sendHeight(measuredHeight);
       }
     };
   </script>
+
 </body>
 </html>
