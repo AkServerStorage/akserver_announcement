@@ -2,32 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AkServer Announcement</title>
+  <title>AkServer Launch Announcement</title>
   <style>
     body {
       margin: 0;
-      padding: 16px;
+      padding: 14px 16px;
       font-family: "Segoe UI", sans-serif;
       background: #ffffff;
       color: #333;
       text-align: center;
       overflow: hidden;
-      position: relative;
     }
 
     .announcement-box {
       background: #f8f9fa;
-      border-radius: 12px;
-      padding: 14px 16px 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      max-width: 500px;
+      border-radius: 10px;
+      padding: 10px 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      max-width: 460px;
       margin: 0 auto;
+      font-size: 0.95rem;
+      line-height: 1.4;
     }
 
     .line {
-      margin: 8px 0;
-      font-size: 1.05rem;
-      line-height: 1.5;
+      margin: 6px 0;
     }
 
     .line strong {
@@ -35,19 +34,19 @@
     }
 
     .emoji {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
 
     #toggleBtn {
       position: absolute;
-      top: 10px;
+      top: 8px;
       right: 12px;
-      font-size: 12px;
+      font-size: 11px;
       background: #0078d4;
       color: white;
       border: none;
       border-radius: 4px;
-      padding: 4px 8px;
+      padding: 3px 6px;
       cursor: pointer;
       display: none;
       z-index: 10;
@@ -58,11 +57,10 @@
   <button id="toggleBtn" onclick="toggleExpand()">More</button>
 
   <div class="announcement-box" id="messageContainer">
-    <div class="line emoji">🎉 🚀 <strong>Welcome to AkServer — Your Private Cloud, Reinvented!</strong></div>
-    <div class="line emoji">🔒 No Internet. No Signups. No Tracking.</div>
-    <div class="line emoji">📂 Instant File Sync & Offline Access.</div>
-    <div class="line emoji extra" style="display: none;">🎮 Play Mode Coming Soon!</div>
-    <div class="line emoji extra" style="display: none;">✨ Smart Upload Automation Built-In.</div>
+    <div class="line emoji">🎉 <strong>AkServer: Your Private Cloud</strong></div>
+    <div class="line emoji">🔒 No Internet. No Signups.</div>
+    <div class="line emoji extra" style="display: none;">📂 Offline Sync + Instant Sharing</div>
+    <div class="line emoji extra" style="display: none;">🎮 New: Game Mode Inside Dashboard!</div>
   </div>
 
   <script>
@@ -78,21 +76,20 @@
     function toggleExpand() {
       expanded = !expanded;
       toggleBtn.textContent = expanded ? 'Less' : 'More';
-      extras.forEach(line => line.style.display = expanded ? 'block' : 'none');
-
-      // After DOM updates, calculate new height
+      extras.forEach(el => el.style.display = expanded ? 'block' : 'none');
       setTimeout(() => {
-        postHeight(container.scrollHeight + 32);
+        postHeight(container.scrollHeight + 40); // Add padding
       }, 100);
     }
 
     window.onload = () => {
-      const fullHeight = container.scrollHeight + 32;
-      if (fullHeight > 140) {
+      const collapsedHeight = container.scrollHeight + 40;
+      if (collapsedHeight > 100) {
         toggleBtn.style.display = 'inline-block';
-        postHeight(140);  // Initial collapsed height
+        extras.forEach(el => el.style.display = 'none');
+        postHeight(100);  // Match your .akserver-announcement-frame default
       } else {
-        postHeight(fullHeight);
+        postHeight(collapsedHeight);
       }
     };
   </script>
