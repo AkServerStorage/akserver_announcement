@@ -78,6 +78,9 @@
       parent.postMessage({ type: "akserver-iframe-height", height }, "*");
     });
   </script>
-
+<script>
+  // Notify parent that announcement is active
+  window.parent.postMessage({ type: 'akserver-iframe-mode', mode: 'announcement' }, '*');
+</script>
 </body>
 </html>
