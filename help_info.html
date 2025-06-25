@@ -98,6 +98,9 @@
   history.replaceState({ page: "help" }, "", "#help");
   history.pushState({ page: "block" }, "", "#block");
 </script>
-
+<script>
+  // Notify parent that help/info is active
+  window.parent.postMessage({ type: 'akserver-iframe-mode', mode: 'info' }, '*');
+</script>
 </body>
 </html>
