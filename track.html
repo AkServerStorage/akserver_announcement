@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tracker</title>
+  <script>
+    const url = new URL(window.location.href);
+    const fp = url.searchParams.get("fp");
+    const ver = url.searchParams.get("v");
+
+    // Optional: show nothing or log minimal info
+    console.log("Ping received:", fp, ver);
+
+    // Redirect to homepage silently
+    window.location.href = "https://akserverstorage.github.io/";
+  </script>
+</head>
+<body>
+  <noscript>This page requires JavaScript.</noscript>
+</body>
+</html>
