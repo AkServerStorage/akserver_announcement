@@ -1,8 +1,8 @@
 {
-  "default_policy": "respect_local_trial",
-  "devices": {
-    "f83ac9238c9e4e2c9b6db7e8f123abcd": { "status": "block" },
-    "d7b9fabcde8798123acff0e0fa998877": { "status": "extend", "extend_days": 30 },
-    "abc1234567890fedcba987654321ffff": { "status": "forever" }
+  "2c183cada9b04a1bbe0306c58cd06719": {
+    "name": "Akshay's Laptop",
+    "registered": "2025-07-10",
+    "status": "trial",
+    "notes": "Tested override"
   }
 }
