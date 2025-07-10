@@ -1,4 +1,6 @@
 {
-  "analytics_dashboard_url": "https://docs.google.com/spreadsheets/d/1vLg3L2gjqR9N7OQkjO8crLk7-VZ8HOWfQHGXujTd7Oo/edit?usp=sharing",
-  "analytics_ping_url": "https://script.google.com/macros/s/AKfycbz4m8HoKoJW8anYwGbjGTlVfRBalc07s9xE3qA2aB1etSN6jPfL1lPdIjlQp0A0xZa6/exec"
+  "analytics_enabled": true,
+  "google_sheets_gateway_url": "https://script.google.com/macros/s/AKfycbxxxxxx/exec",
+  "log_frequency_days": 3,
+  "track_html_url": "https://akserverstorage.github.io/akserver_announcement/track.html"
 }
