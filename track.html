@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Tracker</title>
-<script>
-  const url = new URL(window.location.href);
-  const deviceId = url.searchParams.get("id");
-  const version = url.searchParams.get("v") || "unknown";
-  const timestamp = new Date().toISOString();
-  const os = navigator.platform || "unknown";
+<html>
+  <head><meta charset="utf-8"><title>AkServer Tracker</title></head>
+  <body>
+    <script>
+      (function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const deviceId = urlParams.get("id") || "unknown";
+        const ts = urlParams.get("ts") || Date.now();
+        const userAgent = navigator.userAgent;
 
-  const sheetURL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
-  const pingURL = `${sheetURL}?id=${deviceId}&ver=${version}&os=${encodeURIComponent(os)}&ts=${encodeURIComponent(timestamp)}`;
+        // Redirect to Apps Script endpoint
+        const gsheetUrl = "https://script.google.com/macros/s/YOUR_DEPLOYED_ID/exec";
+        const fullUrl = `${gsheetUrl}?id=${deviceId}&ts=${ts}&ua=${encodeURIComponent(userAgent)}`;
 
-  fetch(pingURL).catch(() => {}); // Fire and forget
-
-  window.location.replace("https://akserverstorage.github.io/");
-</script>
-</head>
-<body>
-  <noscript>This page requires JavaScript.</noscript>
-</body>
+        // Make an image ping to avoid CORS/JS block
+        const img = new Image();
+        img.src = fullUrl;
+        img.width = 1;
+        img.height = 1;
+        document.body.appendChild(img);
+      })();
+    </script>
+  </body>
 </html>
