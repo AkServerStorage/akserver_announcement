@@ -1,8 +1,8 @@
 {
-  "2c183cada9b04a1bbe0306c58cd06719": {
-    "name": "Akshay's Laptop",
-    "registered": "2025-07-10",
-    "status": "trial",
-    "notes": "Tested override"
+  "default_policy": "respect_local_trial",
+  "devices": {
+    "abc...": { "status": "forever" },
+    "xyz...": { "status": "block" },
+    "123...": { "status": "extend", "extend_days": 30 }
   }
 }
