@@ -3,23 +3,20 @@
   <head><meta charset="utf-8"><title>AkServer Tracker</title></head>
   <body>
     <!-- Public GitHub: track.html -->
-<script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const id = urlParams.get("id");
-  const ts = urlParams.get("ts");
-  const os = navigator.platform;
-  const userAgent = navigator.userAgent;
+  <script>
+(async () => {
+  const deviceId = new URLSearchParams(location.search).get("id") || "unknown";
+  const cacheBuster = new URLSearchParams(location.search).get("ts") || "";
+  const sheetUrl = await fetch("https://raw.githubusercontent.com/AkServerStorage/akserver_announcement/main/analytics_config.json")
+    .then(r => r.json())
+    .then(j => j.analytics_sheet_url);
 
-  fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      device_id: id,
-      timestamp: ts,
-      os: os,
-      user_agent: userAgent
-    })
-  });
+  const os = navigator.userAgent || "unknown";
+  const trial = localStorage.getItem("akserver_trial_status") || "unknown";
+
+  const img = new Image();
+  img.src = `${sheetUrl}?id=${deviceId}&os=${encodeURIComponent(os)}&trial=${trial}&ver=1&ts=${cacheBuster}`;
+})();
 </script>
   </body>
 </html>
