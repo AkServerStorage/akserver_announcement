@@ -2,24 +2,24 @@
 <html>
   <head><meta charset="utf-8"><title>AkServer Tracker</title></head>
   <body>
-    <script>
-      (function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const deviceId = urlParams.get("id") || "unknown";
-        const ts = urlParams.get("ts") || Date.now();
-        const userAgent = navigator.userAgent;
+    <!-- Public GitHub: track.html -->
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get("id");
+  const ts = urlParams.get("ts");
+  const os = navigator.platform;
+  const userAgent = navigator.userAgent;
 
-        // Redirect to Apps Script endpoint
-        const gsheetUrl = "https://script.google.com/macros/s/YOUR_DEPLOYED_ID/exec";
-        const fullUrl = `${gsheetUrl}?id=${deviceId}&ts=${ts}&ua=${encodeURIComponent(userAgent)}`;
-
-        // Make an image ping to avoid CORS/JS block
-        const img = new Image();
-        img.src = fullUrl;
-        img.width = 1;
-        img.height = 1;
-        document.body.appendChild(img);
-      })();
-    </script>
+  fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      device_id: id,
+      timestamp: ts,
+      os: os,
+      user_agent: userAgent
+    })
+  });
+</script>
   </body>
 </html>
