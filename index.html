@@ -81,31 +81,6 @@
 <script>
   // Notify parent that announcement is active
   window.parent.postMessage({ type: 'akserver-iframe-mode', mode: 'announcement' }, '*');
-</script>
-<!-- AkServer Analytics Tracker -->
-<script>
-  window.addEventListener("load", () => {
-    const lastPingKey = "akserver_last_analytics_v1";
-    const now = Date.now();
-    const interval = 3 * 24 * 60 * 60 * 1000;
-
-    const lastPing = parseInt(localStorage.getItem(lastPingKey), 10);
-    if (!lastPing || now - lastPing > interval) {
-      const data = new URLSearchParams();
-      data.append("device_id", "test001");
-      data.append("trial", "active");
-      data.append("platform", navigator.platform);
-      data.append("language", navigator.language);
-      data.append("screen", `${screen.width}x${screen.height}`);
-      data.append("ua", navigator.userAgent);
-
-      navigator.sendBeacon("/track", data);
-
-      localStorage.setItem(lastPingKey, now.toString());
-    }
-  });
-</script>
-
-  
+</script> 
 </body>
 </html>
