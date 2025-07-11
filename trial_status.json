@@ -1,8 +1,0 @@
-{
-  "default_policy": "respect_local_trial",
-  "devices": {
-    "abc...": { "status": "forever" },
-    "xyz...": { "status": "block" },
-    "123...": { "status": "extend", "extend_days": 30 }
-  }
-}
