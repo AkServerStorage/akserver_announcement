@@ -1,6 +1,5 @@
 {
-  "analytics_enabled": true,
-  "google_sheets_gateway_url": "https://script.google.com/macros/s/AKfycbz4m8HoKoJW8anYwGbjGTlVfRBalc07s9xE3qA2aB1etSN6jPfL1lPdIjlQp0A0xZa6/exec",
-  "log_frequency_days": 3,
-  "track_html_url": "https://akserverstorage.github.io/akserver_announcement/track.html"
+  "ping_enabled": true,
+  "ping_interval_days": 3,
+  "track_endpoint": "https://akserverstorage.github.io/akserver_announcement/track.html"
 }
