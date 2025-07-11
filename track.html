@@ -1,36 +1,18 @@
-
 <!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><title>Tracking</title></head>
-<body style="margin:0;">
+<html><head><meta charset="utf-8"><title>Tracker</title></head><body>
 <script>
-(async function () {
-  const params = new URLSearchParams(window.location.search);
-  const deviceId = params.get('id') || "unknown";
-  const ts = params.get('ts') || "";
-
-  try {
-    const conf = await fetch("https://akserverstorage.github.io/akserver_announcement/tracking_config.json");
-    const json = await conf.json();
-    const endpoint = json.tracking_endpoint;
-    
-    if (endpoint) {
-      const payload = {
-        device_id: deviceId,
-        ts: ts,
-        ua: navigator.userAgent,
-        platform: navigator.platform,
-        language: navigator.language,
-        screen: `${screen.width}x${screen.height}`
-      };
-
-      const img = new Image();
-      img.src = `${endpoint}?data=${encodeURIComponent(JSON.stringify(payload))}`;
-    }
-  } catch (e) {
-    console.log("Tracking failed:", e);
-  }
+(function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get("id");
+  const ts = urlParams.get("ts");
+  const os = navigator.userAgent || "unknown";
+  
+  // Your Google Apps Script endpoint (can be routed via GitHub too)
+  const endpoint = "https://script.google.com/macros/s/AKfycbzqiK3vcE3CvtEw-DwpSXcEbdGbzUkvEHg_psqz06lYjoQZkijox-1YGpL7qdQAiZ00cg/exec";
+  
+  fetch(`${endpoint}?id=${id}&ts=${ts}&os=${encodeURIComponent(os)}&version=v1`)
+    .then(() => console.log("Ping sent"))
+    .catch(err => console.warn("Tracking failed", err));
 })();
 </script>
-</body>
-</html>
+</body></html>
