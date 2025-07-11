@@ -1,5 +1,0 @@
-{
-  "ping_enabled": true,
-  "ping_interval_days": 3,
-  "analytics_ping_url": "https://akserverstorage.github.io/akserver_announcement/track.html"
-}
