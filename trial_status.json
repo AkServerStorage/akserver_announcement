@@ -1,8 +1,10 @@
 {
   "devices": {
     "APP_DEVICE_eefc94b4-d22c-4d0a-b646-b935c2497c4b": {
-      "status": "forever"
+      "status": "extend",
+      "extend_days": 9999
     }
   },
   "default_policy": "respect_local_trial"
 }
+
