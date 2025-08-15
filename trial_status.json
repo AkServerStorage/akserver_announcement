@@ -1,10 +1,8 @@
 {
-  "trial_status": "active",
   "devices": {
-    "A": {
-      "status": "active",
-      "days_left": 9999,
-      "expiry": "2099-12-31"
+    "APP_DEVICE_eefc94b4-d22c-4d0a-b646-b935c2497c4b": {
+      "status": "forever"
     }
-  }
+  },
+  "default_policy": "respect_local_trial"
 }
